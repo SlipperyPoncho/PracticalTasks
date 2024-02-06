@@ -2,7 +2,9 @@ package com.example.user.javacoretraining.collections;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -27,8 +29,10 @@ public class CollectionsBlock<T extends Comparable> {
      * @throws NullPointerException если один из параметров null
      */
     public List<T> collectionTask0(@NonNull List<T> firstList, @NonNull List<T> secondList) {
-        //TODO: implement it
-        return Collections.emptyList();
+        List<T> resultList = new ArrayList<>(firstList);
+        resultList.addAll(secondList);
+        Collections.sort(resultList, Collections.reverseOrder());
+        return resultList;
     }
 
     /**
@@ -39,8 +43,12 @@ public class CollectionsBlock<T extends Comparable> {
      * @throws NullPointerException если один из параметров null
      */
     public List<T> collectionTask1(@NonNull List<T> inputList) {
-        //TODO: implement it
-        return Collections.emptyList();
+        List<T> result = new ArrayList<>();
+        for (int i = 0; i < inputList.size(); i++) {
+            result.add(inputList.get(i));
+            result.addAll(inputList.subList(0, i));
+        }
+        return result;
     }
 
     /**
@@ -52,8 +60,9 @@ public class CollectionsBlock<T extends Comparable> {
      * @throws NullPointerException если один из параметров null
      */
     public boolean collectionTask2(@NonNull List<T> firstList, @NonNull List<T> secondList) {
-        //TODO: implement it
-        return true;
+        HashSet<T> firstListSet = new HashSet<>(firstList);
+        HashSet<T> secondListSet = new HashSet<>(secondList);
+        return firstListSet.equals(secondListSet);
     }
 
     /**
@@ -68,8 +77,9 @@ public class CollectionsBlock<T extends Comparable> {
      * @throws NullPointerException если один из параметров null
      */
     public List<T> collectionTask3(@NonNull List<T> inputList, int n) {
-        //TODO: implement it
-        return Collections.emptyList();
+        List<T> result = new ArrayList<>(inputList);
+        Collections.rotate(result, n);
+        return result;
     }
 
     /**
@@ -84,8 +94,14 @@ public class CollectionsBlock<T extends Comparable> {
      */
     public List<String> collectionTask4(@NonNull List<String> inputList, @NonNull String a,
                                         @NonNull String b) {
-        //TODO: implement it
-        return Collections.emptyList();
+        List<String> result = new ArrayList<>(inputList);
+        if (b == null) throw new NullPointerException();
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).equals(a)) {
+                result.set(i, b);
+            }
+        }
+        return result;
     }
 
     /*
