@@ -33,9 +33,9 @@ public class StringsTraining {
     public String getOddCharacterString(String text) {
         StringBuilder result = new StringBuilder();
         char[] charText = text.toCharArray();
-        for (int i = 0; i < charText.length; i++) {
+        for (int i = 0; i < text.length(); i++) {
             if (i % 2 != 0) {
-                result.append(charText[i]);
+                result.append(text.charAt(i));
             }
         }
         return result.toString();

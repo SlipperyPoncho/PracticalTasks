@@ -1,6 +1,7 @@
 package com.example.user.javacoretraining.classes;
 
 import android.os.Build;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -171,13 +172,27 @@ public interface ClassesBlock {
         }
         private void changeMinutes(int n) {
             minute += n;
-            if (minute > 59) minute = n - (60 - minute);
-            if (minute < 0) minute = 60 - (n - minute);
+            if (minute > 59) {
+                minute = n - (60 - minute);
+                hour += n / 60;
+            }
+            if (minute < 0) {
+                minute = 60 - (n - minute);
+                hour -= n / 60;
+            }
         }
         private void changeSeconds(int n) {
             second += n;
-            if (second > 59) second = n - (60 - second);
-            if (second < 0) second = 60 - (n - second);
+            if (second > 59) {
+                second = n - (60 - second);
+                minute -= n / 60;
+                hour += n / 3600;
+            }
+            if (second < 0) {
+                second = 60 - (n - second);
+                minute -= n / 60;
+                hour -= n / 3600;
+            }
         }
     }
     /*
@@ -262,7 +277,7 @@ public interface ClassesBlock {
     }
 
     class Task5 {
-        private Abonent[] abonents = new Abonent[] {
+        private final Abonent[] abonents = new Abonent[] {
                 new Abonent(1, "Ivanov", "Ivan", "Ivanovich", "ooo", 12, 44, 15, 123, 0), // не пользовался междугородней
                 new Abonent(2, "Petrov", "Petr", "Petrovich", "ooo", 65, 12, 20, 123, 123),
                 new Abonent(3, "Ilya", "Ilya", "Ilya", "ooo", 51, 67, 15, 123, 0), // не пользовался междугородней
@@ -271,14 +286,21 @@ public interface ClassesBlock {
         };
 
         private void printUsedInterCity() {
-            for (int i = 0; i < abonents.length; i++) {
-                if (abonents[i].timeInterCity > 0) {
-                    abonents[i].printAbonentInfo();
+            for (Abonent abonent : abonents) {
+                if (abonent.timeInterCity > 0) {
+                    abonent.printAbonentInfo();
                 }
             }
         }
 
-        //nonononononono
+        private void printTimeCityOverLimit(int timeCityLimit) {
+            for (Abonent abonent : abonents) {
+                if (abonent.timeCity > timeCityLimit) {
+                    abonent.printAbonentInfo();
+                }
+            }
+        }
+
         private void printAlphabetAbonents() {
             Arrays.sort(abonents);
             for (Abonent a: abonents) {
@@ -402,63 +424,75 @@ public interface ClassesBlock {
      */
     class Product {
         private String title;
-        private int price;
+        private double price;
 
-        public Product(String title, int price) {
+        public Product(String title, double price) {
             this.title = title;
             this.price = price;
         }
 
-        public int getPrice() {return price;}
-        public void setPrice(int price) {this.price = price;}
         public String getTitle() {return title;}
         public void setTitle(String title) {this.title = title;}
+        public double getPrice() {return price;}
+        public void setPrice(double price) {this.price = price;}
     }
 
     class Client {
-        private final String name;
-        private final int credit;
-        private Product clientProduct;
+        private static final String TAG = "Client";
 
-        public Client(String name, int credit) {
+        private int id;
+        private String name;
+        private double account; // Счет клиента
+        private final List<Product> clientProducts;
+
+        public Client(int id, String name, double account) {
+            this.id = id;
             this.name = name;
-            this.credit = credit;
+            this.account = account;
+            clientProducts = new ArrayList<>();
         }
 
-        public int getCredit() {return credit;}
+        public int getId() {return id;}
+        public void setId(int id) {this.id = id;}
         public String getName() {return name;}
-        public Product getClientProduct() {return clientProduct;}
+        public void setName(String name) {this.name = name;}
+        public double getAccount() {return account;}
+        public void setAccount(double account) {this.account = account;}
+        public List<Product> getClientProducts() {return clientProducts;}
 
-        public void makeOrder(Product product) {
-            clientProduct.setTitle(product.getTitle());
-            clientProduct.setPrice(product.getPrice());
+        public void makeOrder(List<Product> products) {
+            double combinedPrice = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                combinedPrice = products.stream()
+                        .mapToDouble(Product::getPrice)
+                        .sum();
+            }
+            if (account < combinedPrice) {
+                Log.i(TAG, "Not enough money");
+            } else {
+                account -= combinedPrice;
+                clientProducts.addAll(products);
+            }
         }
     }
 
     class Merchandiser {
-        public HashMap<Client, Product> registerClientOrder(Client client) {
-            HashMap<Client, Product> map = new HashMap<>();
-            map.put(client, client.clientProduct);
-            return map;
+        public List<Client> blackList = new ArrayList<>();
+
+        public List<Product> addProducts(Product... products) {
+            return new ArrayList<>(Arrays.asList(products));
         }
-    }
 
-    class Task7 {
-        List<Product> products = new ArrayList<> (Arrays.asList(
-                new Product("Book", 12),
-                new Product("Computer", 4000),
-                new Product("Shampoo", 150))
-        );
-        List<Client> clients = new ArrayList<> (Arrays.asList(
-                new Client("Ivan", 500),
-                new Client("Petr", 5_000),
-                new Client("Shaman", 200))
-        );
-
-        void setClientOrders() {
-            for (int i = 0; i < clients.size(); i++) {
-                clients.get(i).makeOrder(products.get(i));
+        public void registerOrder(Client client, List<Product> products) {
+            double combinedPrice = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                combinedPrice = products.stream()
+                        .mapToDouble(Product::getPrice)
+                        .sum();
             }
+            if (client.getAccount() < combinedPrice) {
+                blackList.add(client);
+            } else client.makeOrder(products);
         }
     }
 }
