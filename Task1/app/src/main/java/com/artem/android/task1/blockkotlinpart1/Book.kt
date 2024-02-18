@@ -7,7 +7,7 @@ package com.artem.android.task1.blockkotlinpart1
 class Book(override val price: Int,
            override val wordCount: Int) : Publication {
 
-    override fun getType(str: String): String = when (this.wordCount) {
+    override fun getType(): String = when (this.wordCount) {
         in 0..1000 -> "Flash Fiction"
         in 1001..7500 -> "Short Story"
         in 7500..Int.MAX_VALUE -> "Novel"

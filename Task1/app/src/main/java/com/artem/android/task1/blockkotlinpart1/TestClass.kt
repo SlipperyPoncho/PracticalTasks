@@ -20,7 +20,7 @@ class TestClass {
 
     // Вывести в лог для каждого объекта тип, количество строк и цену в евро в отформатированном виде.
     fun printPublicationInfo(publication: Publication) {
-        Log.i(TAG, "Publication type = ${publication::class.java.typeName}\n" +
+        Log.i(TAG, "Publication type = ${publication.getType()}\n" +
                 "Words = ${publication.wordCount}\n" +
                 "Price = ${publication.price} €")
     }
@@ -37,6 +37,6 @@ class TestClass {
     }
 
     companion object {
-        private const val TAG = "TestClass"
+        private const val TAG = "TestClassKotlinPart1"
     }
 }

@@ -7,5 +7,5 @@ package com.artem.android.task1.blockkotlinpart1
 class Magazine(override val price: Int,
                override val wordCount: Int) : Publication {
 
-    override fun getType(str: String): String = "Magazine"
+    override fun getType() = "Magazine"
 }

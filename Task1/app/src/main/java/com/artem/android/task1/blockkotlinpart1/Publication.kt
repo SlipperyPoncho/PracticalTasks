@@ -6,5 +6,5 @@ interface Publication {
     val price: Int
     val wordCount: Int
 
-    fun getType(str: String): String
+    fun getType(): String
 }

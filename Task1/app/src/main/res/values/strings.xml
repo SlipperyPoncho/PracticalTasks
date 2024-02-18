@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">Task1</string>
+    <string name="app_name">Хочу помочь</string>
+    <string name="appbar_text">Профиль</string>
+    <string name="profile_text">Профиль</string>
+    <string name="edit">Edit</string>
+    <string name="profile_name">Константинов Денис</string>
+    <string name="birth_date_text">Дата рождения</string>
+    <string name="birth_date">01 февраля 1980</string>
+    <string name="profession_hint_text">Сфера деятельности</string>
+    <string name="profession_text">Хирургия, травматология</string>
+    <string name="push">Получать push-уведомления</string>
+    <string name="friends_hint_text">Ваши друзья</string>
+    <string name="friend1_name">Дмитрий Валерьевич</string>
+    <string name="friend2_name">Евгений Александров</string>
+    <string name="friend3_name">Виктор Кузнецов</string>
+    <string name="btn_text">Выйти из аккаунта</string>
+    <string name="profile">Профиль</string>
+    <string name="news">Новости</string>
+    <string name="search">Поиск</string>
+    <string name="history">История</string>
+    <string name="help">Помочь</string>
+    <string name="loading_text">Загрузка…</string>
 </resources>
