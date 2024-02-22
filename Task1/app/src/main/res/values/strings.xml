@@ -20,4 +20,16 @@
     <string name="history">История</string>
     <string name="help">Помочь</string>
     <string name="loading_text">Загрузка…</string>
+    <string name="choose_photo_text">Выбрать фото</string>
+    <string name="make_photo_text">Сделать снимок</string>
+    <string name="delete_photo_tv">Удалить</string>
+    <string name="help_text">Помочь</string>
+    <string name="choose_help_category_text">Выберите категорию помощи</string>
+    <string name="help_element_text">Дети</string>
+    <string name="search_hint">Введите название организации</string>
+    <string name="nko_key_words">Ключевые слова: мастер-класс, помощь Результаты поиска: 109 мероприятий</string>
+    <string name="nko_placeholder_text">Благотворительный фонд Алины Кабаевой</string>
+    <string name="search_empty_hint">Напишите в строке поиска название мероприятия или ключевые слова.</string>
+    <string name="search_empty_example">Например,</string>
+    <string name="search_empty_link_text">мастер-класс, помощь</string>
 </resources>

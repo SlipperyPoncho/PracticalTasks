@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ProfileFragment.newInstance())
+                .replace(R.id.fragment_container, HelpFragment.newInstance())
                 .commit()
         }, 2000)
     }

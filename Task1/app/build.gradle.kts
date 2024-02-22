@@ -65,4 +65,5 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 }
