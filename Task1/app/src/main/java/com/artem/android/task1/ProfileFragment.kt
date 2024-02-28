@@ -8,16 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileFragment: Fragment() {
 
     private lateinit var profilePic: ImageView
-    private lateinit var bottomNavBar: BottomNavigationView
-    private lateinit var bottomNavBarHelp: View
-    private lateinit var bottomNavBarSearch: View
+    private var dialogFragment: DialogFragment? = null
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,10 +24,20 @@ class ProfileFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.profile_fragment, container, false)
         profilePic = view.findViewById(R.id.profile_pic_iv)
-        bottomNavBar = view.findViewById(R.id.bottom_nav_bar)
-        bottomNavBar.selectedItemId = R.id.profile
-        bottomNavBarHelp = bottomNavBar.findViewById(R.id.help)
-        bottomNavBarSearch = bottomNavBar.findViewById(R.id.search)
+        childFragmentManager.setFragmentResultListener("requestKey", viewLifecycleOwner) {
+                _, bundle ->
+            val result = bundle.getParcelable("bundleKey", Bitmap::class.java)
+            dialogFragment?.dismiss()
+            profilePic.setImageBitmap(result)
+        }
+        childFragmentManager.setFragmentResultListener("requestKey2", viewLifecycleOwner) {
+                _, bundle ->
+            val result = bundle.getBoolean("bundleKey2")
+            if (result) {
+                profilePic.setImageResource(R.drawable.profile_pic)
+            }
+            dialogFragment?.dismiss()
+        }
         return view
     }
 
@@ -36,32 +45,8 @@ class ProfileFragment: Fragment() {
     override fun onStart() {
         super.onStart()
         profilePic.setOnClickListener {
-            childFragmentManager.setFragmentResultListener("requestKey", viewLifecycleOwner) {
-                    _, bundle ->
-                val result = bundle.getParcelable("bundleKey", Bitmap::class.java)
-                profilePic.setImageBitmap(result)
-            }
-            val dialog = ChangePhotoDialogFragment.newInstance()
-            dialog.show(this@ProfileFragment.childFragmentManager, PHOTO_CHANGE)
-
-            // NOT WORKING
-            childFragmentManager.setFragmentResultListener("requestKey2", viewLifecycleOwner) {
-                    _, bundle ->
-                val result = bundle.getSerializable("bundleKey2", Boolean::class.java)
-                //if (result == true) {
-                    profilePic.setImageResource(R.drawable.profile_pic)
-                //}
-            }
-        }
-        bottomNavBarHelp.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HelpFragment.newInstance())
-                .commit()
-        }
-        bottomNavBarSearch.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SearchFragment.newInstance())
-                .commit()
+            dialogFragment = ChangePhotoDialogFragment.newInstance()
+            dialogFragment?.show(this@ProfileFragment.childFragmentManager, PHOTO_CHANGE)
         }
     }
 

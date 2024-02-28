@@ -64,7 +64,7 @@ class ChangePhotoDialogFragment: DialogFragment() {
         deletePhotoTv.setOnClickListener {
             val isDeleted = true
             val result = Bundle().apply {
-                putSerializable("bundleKey2", isDeleted)
+                putBoolean("bundleKey2", isDeleted)
             }
             parentFragmentManager.setFragmentResult("requestKey2", result)
         }
