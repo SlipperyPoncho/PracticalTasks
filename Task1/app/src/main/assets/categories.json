@@ -1,0 +1,27 @@
+[
+  {
+    "categoryType": "CHILD",
+    "imageResId": 2131165427,
+    "title": "Дети"
+  },
+  {
+    "categoryType": "ADULT",
+    "imageResId": 2131165425,
+    "title": "Взрослые"
+  },
+  {
+    "categoryType": "OLD",
+    "imageResId": 2131165429,
+    "title": "Пожилые"
+  },
+  {
+    "categoryType": "ANIMAL",
+    "imageResId": 2131165426,
+    "title": "Животные"
+  },
+  {
+    "categoryType": "EVENTS",
+    "imageResId": 2131165428,
+    "title": "Мероприятия"
+  }
+]

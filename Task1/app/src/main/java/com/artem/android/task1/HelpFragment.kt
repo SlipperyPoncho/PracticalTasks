@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,20 +15,24 @@ class HelpFragment: Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 
-    private var categories: List<Category> = mutableListOf(
-        Category("Дети", R.drawable.category_child),
-        Category("Взрослые", R.drawable.category_adult),
-        Category("Пожилые", R.drawable.category_old),
-        Category("Животные", R.drawable.category_animals),
-        Category("Мероприятия", R.drawable.category_events),
-    )
+    private val categoryViewModel by lazy {
+        ViewModelProvider(this)[CategoryViewModel::class.java]
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val categoriesFromJson = context?.let { categoryViewModel.categoryFromJSON(it) }
+        if (categoriesFromJson != null) {
+            categories = categoriesFromJson
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.help_fragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_help, container, false)
         recyclerView = view.findViewById(R.id.help_category_rv)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = CategoryAdapter(categories)
@@ -64,6 +69,7 @@ class HelpFragment: Fragment() {
     }
 
     companion object {
+        var categories: List<Category> = mutableListOf()
         fun newInstance(): Fragment {
             return HelpFragment()
         }

@@ -7,13 +7,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.UUID
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewsFragment.Callbacks {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var bottomNavBarHelp: View
     private lateinit var bottomNavBarSearch: View
     private lateinit var bottomNavBarProfile: View
+    private lateinit var bottomNavBarNews: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavBarHelp = bottomNavigationView.findViewById(R.id.help)
         bottomNavBarSearch = bottomNavigationView.findViewById(R.id.search)
         bottomNavBarProfile = bottomNavigationView.findViewById(R.id.profile)
+        bottomNavBarNews = bottomNavigationView.findViewById(R.id.news)
         bottomNavigationView.selectedItemId = R.id.help
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
@@ -60,5 +63,19 @@ class MainActivity : AppCompatActivity() {
                 .commit()
             bottomNavigationView.selectedItemId = R.id.search
         }
+        bottomNavBarNews.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, NewsFragment.newInstance())
+                .commit()
+            bottomNavigationView.selectedItemId = R.id.news
+        }
+    }
+
+    override fun onEventSelected(eventId: UUID) {
+        val fragment = EventDetailFragment.newInstance(eventId)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

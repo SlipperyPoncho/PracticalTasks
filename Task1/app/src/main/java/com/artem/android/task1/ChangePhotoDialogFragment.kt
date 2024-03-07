@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,20 +22,31 @@ class ChangePhotoDialogFragment: DialogFragment() {
     private lateinit var choosePhotoTv: TextView
     private lateinit var makePhotoTv: TextView
     private lateinit var deletePhotoTv: TextView
-    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraActivityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var galleryActivityResultLauncher: ActivityResultLauncher<Intent>
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        activityResultLauncher = registerForActivityResult(
+        cameraActivityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
                 val photoBitmap = data?.extras?.getParcelable("data", Bitmap::class.java)
                 val res = Bundle().apply {
-                    putParcelable("bundleKey", photoBitmap)
+                    putParcelable("imageBitmapBundle", photoBitmap)
                 }
-                parentFragmentManager.setFragmentResult("requestKey", res)
+                parentFragmentManager.setFragmentResult("imageBitmapRequest", res)
+            }
+        }
+        galleryActivityResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageUri = result.data?.data
+                val res = Bundle().apply {
+                    putParcelable("imageUriBundle", imageUri)
+                }
+                parentFragmentManager.setFragmentResult("imageUriRequest", res)
             }
         }
     }
@@ -56,22 +66,27 @@ class ChangePhotoDialogFragment: DialogFragment() {
     @SuppressLint("QueryPermissionsNeeded")
     override fun onStart() {
         super.onStart()
-        choosePhotoTv.setOnClickListener { Log.i(TAG, "choose photo clicked") }
+        choosePhotoTv.setOnClickListener {
+            val galleryIntent = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
+            galleryActivityResultLauncher.launch(galleryIntent)
+        }
         makePhotoTv.setOnClickListener {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            activityResultLauncher.launch(cameraIntent)
+            cameraActivityResultLauncher.launch(cameraIntent)
         }
         deletePhotoTv.setOnClickListener {
             val isDeleted = true
             val result = Bundle().apply {
-                putBoolean("bundleKey2", isDeleted)
+                putBoolean("deleteBundle", isDeleted)
             }
-            parentFragmentManager.setFragmentResult("requestKey2", result)
+            parentFragmentManager.setFragmentResult("deleteRequest", result)
         }
     }
 
     companion object {
-        private const val TAG = "ChangePhotoDialogFragment"
         fun newInstance(): DialogFragment {
             return ChangePhotoDialogFragment()
         }

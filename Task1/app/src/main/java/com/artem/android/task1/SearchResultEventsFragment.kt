@@ -12,8 +12,7 @@ class SearchResultEventsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search_events, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_search_events, container, false)
     }
 
     companion object {

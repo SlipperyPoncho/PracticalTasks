@@ -31,5 +31,24 @@
     <string name="nko_placeholder_text">Благотворительный фонд Алины Кабаевой</string>
     <string name="search_empty_hint">Напишите в строке поиска название мероприятия или ключевые слова.</string>
     <string name="search_empty_example">Например,</string>
-    <string name="search_empty_link_text">мастер-класс, помощь</string>
+    <string name="search_empty_link_text"><u>мастер-класс, помощь</u></string>
+    <string name="event_text">Спонсоры отремонтируют школу-интернат</string>
+    <string name="event_detail_text">Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …</string>
+    <string name="event_date_text">Осталось 13 дней (21.09 – 20.10)</string>
+    <string name="news_toolbar_text">Новости</string>
+    <string name="filter_text">Фильтр</string>
+    <string name="help_categories_text">Категории помощи</string>
+    <string name="detail_event_text">Благотворительный Фонд «Счастливый Мир»</string>
+    <string name="event_detail_nav_text">Санкт-Петербург, Кирочная улица, д. 50А, каб. 208</string>
+    <string name="event_detail_phone_text">+7 (937) 037 37-73 +7 (937) 016 16-16</string>
+    <string name="event_detail_mail_text">У вас есть вопросы?</string>
+    <string name="event_detail_mail_link_text"><u>Напишите нам</u></string>
+    <string name="event_detail_abzac1_text">Участники и болельщики смогли весело и активно провести время на «Петербургском благотворительном марафоне» и при этом финансово поучаствовать в помощи детям.</string>
+    <string name="event_detail_abzac2_text">При этом финансово поучаствовать в помощи детям. При этом финансово поучаствовать в помощи детям.</string>
+    <string name="event_detail_site_link_text"><u>Перейти на сайт организаии</u></string>
+    <string name="event_detail_subs_text">+102</string>
+    <string name="clothes_text">Помочь вещами</string>
+    <string name="volunteer_text">Стать волонтером</string>
+    <string name="instrument_text">Проф. помощь</string>
+    <string name="money_text">Помочь деньгами</string>
 </resources>

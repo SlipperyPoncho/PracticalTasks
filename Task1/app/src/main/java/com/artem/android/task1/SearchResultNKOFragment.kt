@@ -45,9 +45,15 @@ class SearchResultNKOFragment : Fragment() {
     private inner class SearchResultHolder(view: View): RecyclerView.ViewHolder(view) {
 
         private val searchResultTextView: TextView = view.findViewById(R.id.nko_list_item_tv)
+        private val searchResultUnderline: View = view.findViewById(R.id.search_result_underline)
 
         fun bind(searchResult: String) {
             searchResultTextView.text = searchResult
+        }
+
+        fun bindLast(searchResult: String) {
+            searchResultTextView.text = searchResult
+            searchResultUnderline.visibility = View.GONE
         }
     }
 
@@ -61,7 +67,12 @@ class SearchResultNKOFragment : Fragment() {
 
         override fun onBindViewHolder(holder: SearchResultHolder, position: Int) {
             val searchResult = searchResults[position]
-            holder.bind(searchResult)
+            if (position == searchResults.size - 1) {
+                holder.bindLast(searchResult)
+            }
+            else {
+                holder.bind(searchResult)
+            }
         }
 
         override fun getItemCount() = searchResults.size
