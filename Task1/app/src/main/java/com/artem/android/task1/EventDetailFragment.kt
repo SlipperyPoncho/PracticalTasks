@@ -11,12 +11,10 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.artem.android.task1.NewsFragment.Companion.events
 import java.util.UUID
 
 class EventDetailFragment: Fragment() {
 
-    private var event: Event? = Event()
     private lateinit var toolBarTitle: TextView
     private lateinit var eventTitle: TextView
     private lateinit var eventDate: TextView
@@ -29,19 +27,11 @@ class EventDetailFragment: Fragment() {
     private lateinit var eventDetailText1: TextView
     private lateinit var eventDetailText2: TextView
 
-    private val eventViewModel by lazy {
-        ViewModelProvider(this)[EventViewModel::class.java]
+    private val charitySharedViewModel by lazy {
+        ViewModelProvider(requireActivity())[CharitySharedViewModel::class.java]
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val eventId = arguments?.getSerializable(ARG_EVENT_ID, UUID::class.java)
-        if (eventId != null) {
-            event = eventViewModel.findEventById(events, eventId)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,23 +49,28 @@ class EventDetailFragment: Fragment() {
         additionalImage2 = view.findViewById(R.id.event_detail_image3_iv)
         eventDetailText1 = view.findViewById(R.id.event_detail_text1_tv)
         eventDetailText2 = view.findViewById(R.id.event_detail_text2_tv)
-        updateUI()
+
+        val eventId = arguments?.getSerializable(ARG_EVENT_ID, UUID::class.java)
+        if (eventId != null) {
+            charitySharedViewModel.findEventById(eventId)?.let { updateUI(it) }
+        }
+
         return view
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateUI() {
-        toolBarTitle.text = event?.title
-        eventTitle.text = event?.title
-        eventDate.text = eventViewModel.setDateText(event)
-        sponsorText.text = event?.sponsor
-        eventAddress.text = event?.address
-        contactPhone.text = event?.phoneNumbers
-        event?.imageResId?.let { mainImage.setImageResource(it) }
-        event?.additionalImageResId?.let { additionalImage1.setImageResource(it) }
-        event?.additionalImage2ResId?.let { additionalImage2.setImageResource(it) }
-        eventDetailText1.text = event?.detailsText1
-        eventDetailText2.text = event?.detailsText2
+    private fun updateUI(event: Event) {
+        toolBarTitle.text = event.title
+        eventTitle.text = event.title
+        eventDate.text = setDateText(event)
+        sponsorText.text = event.sponsor
+        eventAddress.text = event.address
+        contactPhone.text = event.phoneNumbers
+        event.imageResId?.let { mainImage.setImageResource(it) }
+        event.additionalImageResId?.let { additionalImage1.setImageResource(it) }
+        event.additionalImage2ResId?.let { additionalImage2.setImageResource(it) }
+        eventDetailText1.text = event.detailsText1
+        eventDetailText2.text = event.detailsText2
     }
 
     companion object {

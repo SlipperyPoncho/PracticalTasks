@@ -6,10 +6,10 @@ import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.UUID
 
-class MainActivity : AppCompatActivity(), NewsFragment.Callbacks {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var bottomNavBarHelp: View
@@ -17,9 +17,15 @@ class MainActivity : AppCompatActivity(), NewsFragment.Callbacks {
     private lateinit var bottomNavBarProfile: View
     private lateinit var bottomNavBarNews: View
 
+    private val charitySharedViewModel by lazy {
+        ViewModelProvider(this)[CharitySharedViewModel::class.java]
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        charitySharedViewModel.initializeData(this)
 
         bottomNavigationView = findViewById(R.id.bottom_nav_bar)
         bottomNavBarHelp = bottomNavigationView.findViewById(R.id.help)
@@ -69,13 +75,5 @@ class MainActivity : AppCompatActivity(), NewsFragment.Callbacks {
                 .commit()
             bottomNavigationView.selectedItemId = R.id.news
         }
-    }
-
-    override fun onEventSelected(eventId: UUID) {
-        val fragment = EventDetailFragment.newInstance(eventId)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 }

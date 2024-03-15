@@ -1,6 +1,5 @@
 package com.artem.android.task1
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,32 +14,15 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.util.UUID
 
 class NewsFragment: Fragment() {
 
-    interface Callbacks { fun onEventSelected(eventId: UUID) }
-
-    private var callbacks: Callbacks? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var filterImageView: ImageView
     private lateinit var adapter: EventAdapter
 
-    private val eventViewModel by lazy {
-        ViewModelProvider(this)[EventViewModel::class.java]
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbacks = context as Callbacks?
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val eventsFromJSON = context?.let { eventViewModel.eventFromJSON(it) }
-        if (eventsFromJSON != null) {
-            events = eventsFromJSON
-        }
+    private val charitySharedViewModel by lazy {
+        ViewModelProvider(requireActivity())[CharitySharedViewModel::class.java]
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -50,14 +32,21 @@ class NewsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_news, container, false)
+        filterImageView = view.findViewById(R.id.news_filter_iv)
         recyclerView = view.findViewById(R.id.news_rv)
-
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = EventAdapter()
-        adapter.differ.submitList(events)
-        recyclerView.adapter = adapter
 
-        filterImageView = view.findViewById(R.id.news_filter_iv)
+        charitySharedViewModel.currentEvents.observe(viewLifecycleOwner) { events ->
+            adapter.differ.submitList(events)
+            filterImageView.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, FilterFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
+        recyclerView.adapter = adapter
 
         parentFragmentManager.setFragmentResultListener("listRequestKey", viewLifecycleOwner) {
                 _, bundle ->
@@ -68,21 +57,6 @@ class NewsFragment: Fragment() {
         }
 
         return view
-    }
-
-    override fun onStart() {
-        super.onStart()
-        filterImageView.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, FilterFragment.newInstance(events))
-                .addToBackStack(null)
-                .commit()
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
     }
 
     private inner class EventHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -100,11 +74,14 @@ class NewsFragment: Fragment() {
             eventTitle.text = event.title
             event.imageResId?.let { eventImg.setImageResource(it) }
             eventDetails.text = event.eventDetails
-            eventDate.text = eventViewModel.setDateText(event)
+            eventDate.text = setDateText(event)
         }
 
         override fun onClick(v: View?) {
-            callbacks?.onEventSelected(event.id)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, EventDetailFragment.newInstance(event.id))
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -135,7 +112,6 @@ class NewsFragment: Fragment() {
     }
 
     companion object {
-        lateinit var events: List<Event>
         fun newInstance(): Fragment {
             return NewsFragment()
         }
