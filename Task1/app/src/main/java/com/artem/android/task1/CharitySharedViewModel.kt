@@ -1,6 +1,5 @@
 package com.artem.android.task1
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,14 +20,13 @@ class CharitySharedViewModel: ViewModel() {
 
     private var events: List<Event> = emptyList()
 
-    fun initializeData(context: Context) {
-        categoriesFromJSON(context)
-        eventsFromJSON(context)
+    fun initializeData(categoriesFromAssets: String, eventsFromAssets: String) {
+        categoriesFromJSON(categoriesFromAssets)
+        eventsFromJSON(eventsFromAssets)
     }
 
-    private fun categoriesFromJSON(context: Context) {
-        val jsonString = readJSONFromAssets(context, "categories.json")
-        val jsonArray: JsonArray = JsonParser.parseString(jsonString).asJsonArray
+    private fun categoriesFromJSON(jsonFromAssets: String) {
+        val jsonArray: JsonArray = JsonParser.parseString(jsonFromAssets).asJsonArray
         val categories: MutableList<Category> = mutableListOf()
 
         for (json in jsonArray) {
@@ -36,18 +34,17 @@ class CharitySharedViewModel: ViewModel() {
             categories.add(categoryData)
         }
 
-        _categories.value = categories.map {
+        _categories.postValue(categories.map {
             CategoryModel(
                 title = it.title,
                 imageResId = it.imageResId,
                 categoryType = it.categoryType
             )
-        }
+        })
     }
 
-    private fun eventsFromJSON(context: Context) {
-        val jsonString = readJSONFromAssets(context, "events.json")
-        val jsonArray: JsonArray = JsonParser.parseString(jsonString).asJsonArray
+    private fun eventsFromJSON(jsonFromAssets: String) {
+        val jsonArray: JsonArray = JsonParser.parseString(jsonFromAssets).asJsonArray
         val events: MutableList<Event> = mutableListOf()
 
         for (json in jsonArray) {
@@ -55,7 +52,7 @@ class CharitySharedViewModel: ViewModel() {
             events.add(eventData)
         }
 
-        _events.value = events
+        _events.postValue(events)
         this.events = events
     }
 
