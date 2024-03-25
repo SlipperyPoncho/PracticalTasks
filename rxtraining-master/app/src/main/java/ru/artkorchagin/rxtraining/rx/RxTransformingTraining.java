@@ -1,6 +1,14 @@
 package ru.artkorchagin.rxtraining.rx;
 
+import android.os.Build;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import io.reactivex.Observable;
 import io.reactivex.observables.GroupedObservable;
@@ -24,7 +32,7 @@ public class RxTransformingTraining {
      * преобразованные из чисел в {@code intObservable}
      */
     public Observable<String> transformIntToString(Observable<Integer> intObservable) {
-        throw new NotImplementedException();
+        return intObservable.map(Object::toString);
     }
 
     /**
@@ -36,7 +44,7 @@ public class RxTransformingTraining {
      * {@code idObservable}
      */
     public Observable<Entity> requestEntityById(Observable<Integer> idObservable) {
-        throw new NotImplementedException();
+        return idObservable.concatMap(this::requestApiEntity);
     }
 
     /**
@@ -48,7 +56,7 @@ public class RxTransformingTraining {
      * поток имён объединённых первой буквой в имени
      */
     public Observable<GroupedObservable<Character, String>> distributeNamesByFirstLetter(Observable<String> namesObservable) {
-        throw new NotImplementedException();
+        return namesObservable.groupBy(a -> a.charAt(0));
     }
 
     /**
@@ -60,7 +68,10 @@ public class RxTransformingTraining {
      * @return {@code Observable} который эммитит списки чисел из {@code intObservable}
      */
     public Observable<List<Integer>> collectsIntsToLists(int listsSize, Observable<Integer> intObservable) {
-        throw new NotImplementedException();
+        List<Integer> list = intObservable.toList().blockingGet();
+        int fullChunks = (list.size() - 1) / listsSize;
+        Observable<List<Integer>> result = intObservable.map(n -> list.subList(n * listsSize, n == fullChunks ? list.size() : (n + 1) * listsSize));
+        return null;
     }
 
     /* Вспомогательные методы */

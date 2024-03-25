@@ -1,8 +1,10 @@
 package ru.artkorchagin.rxtraining.rx;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import ru.artkorchagin.rxtraining.exceptions.ExpectedException;
@@ -24,7 +26,8 @@ public class RxSingleTraining {
      * либо ошибку {@link ExpectedException} если оно отрицательное
      */
     Single<Integer> onlyOneElement(Integer value) {
-        throw new NotImplementedException();
+        if (value > 0) return Single.just(value);
+        else return Single.error(new ExpectedException());
     }
 
     /**
@@ -36,7 +39,7 @@ public class RxSingleTraining {
      * последовательность пустая
      */
     Single<Integer> onlyOneElementOfSequence(Observable<Integer> integerObservable) {
-        throw new NotImplementedException();
+        return integerObservable.firstOrError();
     }
 
     /**
@@ -47,7 +50,7 @@ public class RxSingleTraining {
      * пустая
      */
     Single<Integer> calculateSumOfValues(Observable<Integer> integerObservable) {
-        throw new NotImplementedException();
+        return integerObservable.reduce((x, y) -> x + y).toSingle();
     }
 
     /**
@@ -58,7 +61,7 @@ public class RxSingleTraining {
      * {@code integerObservable}
      */
     Single<List<Integer>> collectionOfValues(Observable<Integer> integerObservable) {
-        throw new NotImplementedException();
+        return integerObservable.toList();
     }
 
     /**
@@ -69,7 +72,8 @@ public class RxSingleTraining {
      * {@code integerSingle} положительны, {@code false} если есть отрицательные элементы
      */
     Single<Boolean> allElementsIsPositive(Observable<Integer> integerSingle) {
-        throw new NotImplementedException();
+        if (integerSingle.all(x -> x > 0).blockingGet()) return Single.just(true);
+        else return Single.just(false);
     }
 
 }

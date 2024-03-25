@@ -1,6 +1,7 @@
 package ru.artkorchagin.rxtraining.rx;
 
 import io.reactivex.Observable;
+import ru.artkorchagin.rxtraining.exceptions.ExpectedException;
 import ru.artkorchagin.rxtraining.exceptions.NotImplementedException;
 
 /**
@@ -22,7 +23,7 @@ public class RxErrorsTraining {
      * defaultValue
      */
     Observable<Integer> handleErrorsWithDefaultValue(Observable<Integer> intObservable, final Integer defaultValue) {
-        throw new NotImplementedException();
+        return intObservable.onErrorReturnItem(defaultValue);
     }
 
     /**
@@ -36,6 +37,6 @@ public class RxErrorsTraining {
      * {@code fallbackObservable}
      */
     Observable<Integer> handleErrorsWithFallbackObservable(Observable<Integer> intObservable, Observable<Integer> fallbackObservable) {
-        throw new NotImplementedException();
+        return intObservable.onErrorResumeNext(fallbackObservable);
     }
 }
