@@ -1,19 +1,9 @@
 package ru.artkorchagin.rxtraining.rx;
 
-import android.os.Build;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import io.reactivex.Observable;
 import io.reactivex.observables.GroupedObservable;
 import ru.artkorchagin.rxtraining.entity.Entity;
-import ru.artkorchagin.rxtraining.exceptions.NotImplementedException;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
@@ -68,10 +58,7 @@ public class RxTransformingTraining {
      * @return {@code Observable} который эммитит списки чисел из {@code intObservable}
      */
     public Observable<List<Integer>> collectsIntsToLists(int listsSize, Observable<Integer> intObservable) {
-        List<Integer> list = intObservable.toList().blockingGet();
-        int fullChunks = (list.size() - 1) / listsSize;
-        Observable<List<Integer>> result = intObservable.map(n -> list.subList(n * listsSize, n == fullChunks ? list.size() : (n + 1) * listsSize));
-        return null;
+        return intObservable.buffer(listsSize);
     }
 
     /* Вспомогательные методы */
