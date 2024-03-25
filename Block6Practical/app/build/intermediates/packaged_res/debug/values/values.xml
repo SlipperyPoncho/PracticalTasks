@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#eff3f6</color>
+    <color name="black">#FF000000</color>
+    <color name="dark_leaf">#457026</color>
+    <color name="leaf">#66a636</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">Block6Practical</string>
+    <style name="Base.Theme.Block6Practical" parent="Theme.Material3.DayNight">
+        
+        <item name="colorPrimary">@color/dark_leaf</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/leaf</item>
+    </style>
+    <style name="Theme.Block6Practical" parent="Base.Theme.Block6Practical"/>
+</resources>

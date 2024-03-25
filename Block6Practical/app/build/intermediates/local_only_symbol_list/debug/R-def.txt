@@ -1,0 +1,19 @@
+R_DEF: Internal format may change without notice
+local
+color background
+color black
+color dark_leaf
+color leaf
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable icon_logo
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.Block6Practical
+style MyActionBar
+style Theme.Block6Practical
+xml backup_rules
+xml data_extraction_rules
