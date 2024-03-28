@@ -17,7 +17,7 @@ class MyService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         executor.execute {
-            Thread.sleep(5000)
+            Thread.sleep(10000)
             val resultCategories = readJSONFromAssets(applicationContext, "categories.json")
             val resultEvents = readJSONFromAssets(applicationContext, "events.json")
             val newIntent = Intent(MainActivity.BROADCAST_ACTION)

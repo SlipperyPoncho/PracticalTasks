@@ -16,7 +16,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var bottomNavBarHelp: View
@@ -36,13 +36,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val executor: ExecutorService = Executors.newSingleThreadExecutor()
-//        executor.execute {
-//            Thread.sleep(5000)
-//            runOnUiThread { progressBar.visibility = View.GONE }
-//            charitySharedViewModel.initializeData(this)
-//        }
-
         bottomNavigationView = findViewById(R.id.bottom_nav_bar)
         bottomNavBarHelp = bottomNavigationView.findViewById(R.id.help)
         bottomNavBarSearch = bottomNavigationView.findViewById(R.id.search)
@@ -60,10 +53,8 @@ class MainActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HelpFragment.newInstance())
+                .replace(R.id.fragment_container, AuthFragment.newInstance())
                 .commit()
-            bottomNavigationView.isVisible = true
-            progressBar.visibility = View.VISIBLE
         }, 2000)
 
         val intent = Intent(this, MyService::class.java)
@@ -106,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragment_container, SearchFragment.newInstance())
                 .commit()
             bottomNavigationView.selectedItemId = R.id.search
-            progressBar.visibility = View.GONE
+            if (!isDataLoaded) progressBar.visibility = View.VISIBLE
         }
         bottomNavBarNews.setOnClickListener {
             supportFragmentManager.beginTransaction()
@@ -120,6 +111,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(broadcastReceiver)
+    }
+
+    override fun onLoginClicked() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, HelpFragment.newInstance())
+            .commit()
+        bottomNavigationView.isVisible = true
+        if (!isDataLoaded) progressBar.visibility = View.VISIBLE
+        bottomNavigationView.selectedItemId = R.id.help
     }
 
     companion object {

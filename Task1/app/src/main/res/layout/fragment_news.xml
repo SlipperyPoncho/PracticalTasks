@@ -39,6 +39,31 @@
             android:contentDescription="@string/app_name" />
     </androidx.appcompat.widget.Toolbar>
 
+    <ImageView
+        android:id="@+id/unread_news_counter_iv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:visibility="gone"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/redcircle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_news"/>
+
+    <TextView
+        android:id="@+id/unread_news_counter_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:fontFamily="@font/officina_sans_extra_bold"
+        android:text="@string/unread_news_counter_text"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/unread_news_counter_iv"
+        app:layout_constraintEnd_toEndOf="@+id/unread_news_counter_iv"
+        app:layout_constraintStart_toStartOf="@+id/unread_news_counter_iv"
+        app:layout_constraintTop_toTopOf="@+id/unread_news_counter_iv" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/news_rv"
         android:layout_width="wrap_content"

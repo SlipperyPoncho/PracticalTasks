@@ -70,4 +70,9 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
+    implementation("io.reactivex.rxjava3:rxjava:3.1.8")
+    implementation("com.jakewharton.rxbinding4:rxbinding:4.0.0")
+    implementation("com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0")
+    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
 }

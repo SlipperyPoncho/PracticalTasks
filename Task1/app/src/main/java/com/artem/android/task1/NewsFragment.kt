@@ -1,5 +1,6 @@
 package com.artem.android.task1
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,11 +21,14 @@ class NewsFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var filterImageView: ImageView
     private lateinit var adapter: EventAdapter
+    private lateinit var newsCounterIV: ImageView
+    private lateinit var newsCounterTV: TextView
 
     private val charitySharedViewModel by lazy {
         ViewModelProvider(requireActivity())[CharitySharedViewModel::class.java]
     }
 
+    @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,12 +37,29 @@ class NewsFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_news, container, false)
         filterImageView = view.findViewById(R.id.news_filter_iv)
+        newsCounterIV = view.findViewById(R.id.unread_news_counter_iv)
+        newsCounterTV = view.findViewById(R.id.unread_news_counter_tv)
         recyclerView = view.findViewById(R.id.news_rv)
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = EventAdapter()
 
-        charitySharedViewModel.currentEvents.observe(viewLifecycleOwner) { events ->
+        charitySharedViewModel.newsEvents.observe(viewLifecycleOwner) { events ->
             adapter.differ.submitList(events)
+
+            //newsCounterTV.text = charitySharedViewModel.newEventsCounter.toString()
+
+            charitySharedViewModel.unreadNewsSubject.subscribe {
+                newsCounterTV.text = it.toString()
+                if (newsCounterTV.text == "0") {
+                    newsCounterIV.visibility = View.GONE
+                    newsCounterTV.visibility = View.GONE
+                }
+                else {
+                    newsCounterIV.visibility = View.VISIBLE
+                    newsCounterTV.visibility = View.VISIBLE
+                }
+            }
+
             filterImageView.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, FilterFragment.newInstance())
@@ -50,7 +71,7 @@ class NewsFragment: Fragment() {
 
         parentFragmentManager.setFragmentResultListener("listRequestKey", viewLifecycleOwner) {
                 _, bundle ->
-            val result = bundle.getParcelableArrayList("listBundleKey", Event::class.java)
+            val result = bundle.getParcelableArrayList("listBundleKey", EventModel::class.java)
             if (result != null) {
                 adapter.differ.submitList(result)
             }
@@ -61,7 +82,7 @@ class NewsFragment: Fragment() {
 
     private inner class EventHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener {
 
-        private lateinit var event: Event
+        private lateinit var event: EventModel
         private val eventTitle: TextView = itemView.findViewById(R.id.event_title_tv)
         private val eventImg: ImageView = itemView.findViewById(R.id.event_iv)
         private val eventDetails: TextView = itemView.findViewById(R.id.event_detail_tv)
@@ -69,7 +90,7 @@ class NewsFragment: Fragment() {
 
         init { itemView.setOnClickListener(this) }
 
-        fun bind(event: Event) {
+        fun bind(event: EventModel) {
             this.event = event
             eventTitle.text = event.title
             event.imageResId?.let { eventImg.setImageResource(it) }
@@ -98,12 +119,12 @@ class NewsFragment: Fragment() {
 
         override fun getItemCount() = differ.currentList.size
 
-        private val differCallback = object : DiffUtil.ItemCallback<Event>() {
-            override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
+        private val differCallback = object : DiffUtil.ItemCallback<EventModel>() {
+            override fun areItemsTheSame(oldItem: EventModel, newItem: EventModel): Boolean {
                 return oldItem.title == newItem.title
             }
 
-            override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
+            override fun areContentsTheSame(oldItem: EventModel, newItem: EventModel): Boolean {
                 return oldItem == newItem
             }
         }

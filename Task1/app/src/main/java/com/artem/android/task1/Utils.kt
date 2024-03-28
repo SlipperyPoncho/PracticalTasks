@@ -74,7 +74,7 @@ private fun stringDateRange(range: Int): String {
     return str.toString()
 }
 
-fun setDateText(event: Event?): String? {
+fun setDateText(event: EventModel?): String? {
     val currentDate = Clock.System.now().toLocalDateTime(TimeZone.of("UTC+3"))
     val eventDateStart = event?.eventDateStart?.let { Instant.fromEpochMilliseconds(it) }
         ?.toLocalDateTime(TimeZone.of("UTC+3"))

@@ -51,4 +51,16 @@
     <string name="volunteer_text">Стать волонтером</string>
     <string name="instrument_text">Проф. помощь</string>
     <string name="money_text">Помочь деньгами</string>
+    <string name="auth_tv_text">Авторизация</string>
+    <string name="auth_tv_social_text">Для участия в мероприятиях войдите в приложение через социальные сети</string>
+    <string name="auth_tv_3_text">Или авторизуйтесь через приложение</string>
+    <string name="auth_Email_hint">E-mail</string>
+    <string name="auth_email_et_text">Введите e-mail</string>
+    <string name="auth_pass_hint_text">Пароль</string>
+    <string name="auth_pass_et_text">Введите пароль</string>
+    <string name="auth_login_btn_text">Войти</string>
+    <string name="auth_forgot_pass_text"><u>Забыли пароль?</u></string>
+    <string name="auth_register_tv_text"><u>Регистрация</u></string>
+    <string name="search_events_placeholder">Event1</string>
+    <string name="unread_news_counter_text">1</string>
 </resources>

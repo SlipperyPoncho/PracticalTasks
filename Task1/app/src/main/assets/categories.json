@@ -1,27 +1,27 @@
 [
   {
     "categoryType": "CHILD",
-    "imageResId": 2131165427,
+    "imageResId": 2131165319,
     "title": "Дети"
   },
   {
     "categoryType": "ADULT",
-    "imageResId": 2131165425,
+    "imageResId": 2131165317,
     "title": "Взрослые"
   },
   {
     "categoryType": "OLD",
-    "imageResId": 2131165429,
+    "imageResId": 2131165321,
     "title": "Пожилые"
   },
   {
     "categoryType": "ANIMAL",
-    "imageResId": 2131165426,
+    "imageResId": 2131165318,
     "title": "Животные"
   },
   {
     "categoryType": "EVENTS",
-    "imageResId": 2131165428,
+    "imageResId": 2131165320,
     "title": "Мероприятия"
   }
 ]

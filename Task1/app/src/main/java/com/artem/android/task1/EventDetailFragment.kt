@@ -52,14 +52,17 @@ class EventDetailFragment: Fragment() {
 
         val eventId = arguments?.getSerializable(ARG_EVENT_ID, UUID::class.java)
         if (eventId != null) {
-            charitySharedViewModel.findEventById(eventId)?.let { updateUI(it) }
+            charitySharedViewModel.findEventById(eventId)?.let {
+                updateUI(it)
+                charitySharedViewModel.updateUnreadNewsCounter(it.id)
+            }
         }
 
         return view
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateUI(event: Event) {
+    private fun updateUI(event: EventModel) {
         toolBarTitle.text = event.title
         eventTitle.text = event.title
         eventDate.text = setDateText(event)

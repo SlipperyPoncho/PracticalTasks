@@ -11,7 +11,7 @@ class SearchResultAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         return when (position) {
             0 -> SearchResultEventsFragment.newInstance()
             1 -> SearchResultNKOFragment.newInstance()
-            else -> ProfileFragment.newInstance()
+            else -> SearchEmptyEventsResultFragment.newInstance()
         }
     }
 }

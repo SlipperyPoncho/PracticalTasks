@@ -42,7 +42,7 @@ class SearchResultNKOFragment : Fragment() {
         adapter.updateList(searchResults.shuffled())
     }
 
-    private inner class SearchResultHolder(view: View): RecyclerView.ViewHolder(view) {
+    private inner class SearchResultNKOHolder(view: View): RecyclerView.ViewHolder(view) {
 
         private val searchResultTextView: TextView = view.findViewById(R.id.nko_list_item_tv)
         private val searchResultUnderline: View = view.findViewById(R.id.search_result_underline)
@@ -58,14 +58,14 @@ class SearchResultNKOFragment : Fragment() {
     }
 
     private inner class SearchResultNKOAdapter(private var searchResults: List<String>)
-        : RecyclerView.Adapter<SearchResultHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultHolder {
+        : RecyclerView.Adapter<SearchResultNKOHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultNKOHolder {
             val inflater = LayoutInflater.from(parent.context)
             val view = inflater.inflate(R.layout.list_item_nko, parent, false)
-            return SearchResultHolder(view)
+            return SearchResultNKOHolder(view)
         }
 
-        override fun onBindViewHolder(holder: SearchResultHolder, position: Int) {
+        override fun onBindViewHolder(holder: SearchResultNKOHolder, position: Int) {
             val searchResult = searchResults[position]
             if (position == searchResults.size - 1) {
                 holder.bindLast(searchResult)

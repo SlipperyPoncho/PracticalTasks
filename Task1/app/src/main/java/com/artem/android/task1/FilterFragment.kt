@@ -48,10 +48,9 @@ class FilterFragment: Fragment() {
                 itemView.category.categoryType?.let { it1 -> filteredCategories.add(it1) }
             }
         }
-        charitySharedViewModel.updateEvents(filteredCategories)
+        charitySharedViewModel.updateNews(filteredCategories)
         parentFragmentManager.popBackStack()
     }
-
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private inner class FilterCategoryHolder(view: View): ViewHolder(view) {

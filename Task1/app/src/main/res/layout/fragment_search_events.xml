@@ -4,55 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey_two">
+    <View
+        android:id="@+id/search_events_top_line"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="1dp"
+        android:background="@color/cool_grey"
+        app:layout_constraintBottom_toTopOf="@id/events_search_rv"/>
 
-    <ImageView
-        android:id="@+id/zoom_iv"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/events_search_rv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/icon_zoom"
+        android:background="@color/white"
+        android:layout_marginTop="130dp"
+        android:layout_marginBottom="54dp"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/search_empty_tv"
-        android:layout_width="243dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        android:text="@string/search_empty_hint"
-        android:textAlignment="center"
-        android:textColor="@color/black_70"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zoom_iv" />
-
-    <TextView
-        android:id="@+id/search_empty_tv2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="95dp"
-        android:text="@string/search_empty_example"
-        android:textColor="@color/black_70"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_empty_tv"/>
-
-    <TextView
-        android:id="@+id/search_empty_tv3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search_empty_link_text"
-        android:textColor="@color/leaf"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search_empty_tv2"
-        app:layout_constraintTop_toBottomOf="@+id/search_empty_tv"
-        app:layout_constraintHorizontal_bias="0"/>
+    <View
+        android:id="@+id/search_events_bottom_line"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="1dp"
+        android:background="@color/cool_grey"
+        app:layout_constraintBottom_toBottomOf="@id/events_search_rv"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
