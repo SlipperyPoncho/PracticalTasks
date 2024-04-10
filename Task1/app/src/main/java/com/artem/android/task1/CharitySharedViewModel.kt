@@ -60,7 +60,7 @@ class CharitySharedViewModel: ViewModel() {
             _categories.postValue(it.map { category ->
                 CategoryModel(
                     title = category.title,
-                    imageResId = category.imageResId,
+                    image = category.image,
                     categoryType = category.categoryType
                 )
             })
@@ -88,15 +88,13 @@ class CharitySharedViewModel: ViewModel() {
             EventModel(
                 id = it.id,
                 title = it.title,
-                imageResId = it.imageResId,
+                images = it.images,
                 eventDetails = it.eventDetails,
                 eventDateStart = it.eventDateStart,
                 eventDateFinish = it.eventDateFinish,
                 sponsor = it.sponsor,
                 address = it.address,
                 phoneNumbers = it.phoneNumbers,
-                additionalImageResId = it.additionalImageResId,
-                additionalImage2ResId = it.additionalImage2ResId,
                 detailsText1 = it.detailsText1,
                 detailsText2 = it.detailsText2,
                 categories = it.categories

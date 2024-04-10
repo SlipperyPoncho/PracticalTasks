@@ -93,7 +93,9 @@ class NewsFragment: Fragment() {
         fun bind(event: EventModel) {
             this.event = event
             eventTitle.text = event.title
-            event.imageResId?.let { eventImg.setImageResource(it) }
+            if (event.images != null) {
+                eventImg.setImageDrawable(getDrawableFromName(requireContext(), event.images[0]))
+            }
             eventDetails.text = event.eventDetails
             eventDate.text = setDateText(event)
         }

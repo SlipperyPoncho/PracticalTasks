@@ -69,9 +69,11 @@ class EventDetailFragment: Fragment() {
         sponsorText.text = event.sponsor
         eventAddress.text = event.address
         contactPhone.text = event.phoneNumbers
-        event.imageResId?.let { mainImage.setImageResource(it) }
-        event.additionalImageResId?.let { additionalImage1.setImageResource(it) }
-        event.additionalImage2ResId?.let { additionalImage2.setImageResource(it) }
+        if (event.images != null) {
+            mainImage.setImageDrawable(getDrawableFromName(requireContext(), event.images[0]))
+            additionalImage1.setImageDrawable(getDrawableFromName(requireContext(), event.images[1]))
+            additionalImage2.setImageDrawable(getDrawableFromName(requireContext(), event.images[2]))
+        }
         eventDetailText1.text = event.detailsText1
         eventDetailText2.text = event.detailsText2
     }

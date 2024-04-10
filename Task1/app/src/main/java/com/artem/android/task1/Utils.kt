@@ -1,6 +1,8 @@
 package com.artem.android.task1
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.Month
@@ -25,6 +27,15 @@ fun readJSONFromAssets(context: Context, path: String): String {
     } catch (e: Exception) {
         e.printStackTrace()
         return ""
+    }
+}
+
+fun getDrawableFromName(context: Context, drawableName: String): Drawable? {
+    val resourceId = context.resources.getIdentifier(drawableName, "drawable", context.packageName)
+    return if (resourceId != 0) {
+        ContextCompat.getDrawable(context, resourceId)
+    } else {
+        null
     }
 }
 

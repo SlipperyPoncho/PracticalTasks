@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+
 class HelpFragment: Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -35,14 +36,14 @@ class HelpFragment: Fragment() {
 
     private inner class CategoryHolder(view: View): RecyclerView.ViewHolder(view) {
 
-        private lateinit var category: CategoryModel
         private val categoryTitle: TextView = itemView.findViewById(R.id.help_category_tv)
         private val categoryImg: ImageView = itemView.findViewById(R.id.help_category_iv)
 
         fun bind(category: CategoryModel) {
-            this.category = category
             categoryTitle.text = category.title
-            category.imageResId?.let { categoryImg.setImageResource(it) }
+            if (category.image != null) {
+                categoryImg.setImageDrawable(getDrawableFromName(requireContext(), category.image))
+            }
         }
     }
 
