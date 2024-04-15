@@ -11,10 +11,12 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 
 class NewsFragment: Fragment() {
 
@@ -45,10 +47,16 @@ class NewsFragment: Fragment() {
 
         charitySharedViewModel.newsEvents.observe(viewLifecycleOwner) { events ->
             adapter.differ.submitList(events)
+            filterImageView.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, FilterFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
 
-            //newsCounterTV.text = charitySharedViewModel.newEventsCounter.toString()
-
-            charitySharedViewModel.unreadNewsSubject.subscribe {
+        lifecycleScope.launch {
+            charitySharedViewModel.unreadNewsCounter.collect {
                 newsCounterTV.text = it.toString()
                 if (newsCounterTV.text == "0") {
                     newsCounterIV.visibility = View.GONE
@@ -59,14 +67,8 @@ class NewsFragment: Fragment() {
                     newsCounterTV.visibility = View.VISIBLE
                 }
             }
-
-            filterImageView.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, FilterFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
-            }
         }
+
         recyclerView.adapter = adapter
 
         parentFragmentManager.setFragmentResultListener("listRequestKey", viewLifecycleOwner) {

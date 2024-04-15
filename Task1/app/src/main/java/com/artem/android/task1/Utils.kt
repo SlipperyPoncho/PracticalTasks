@@ -1,5 +1,6 @@
 package com.artem.android.task1
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
@@ -30,6 +31,7 @@ fun readJSONFromAssets(context: Context, path: String): String {
     }
 }
 
+@SuppressLint("DiscouragedApi")
 fun getDrawableFromName(context: Context, drawableName: String): Drawable? {
     val resourceId = context.resources.getIdentifier(drawableName, "drawable", context.packageName)
     return if (resourceId != 0) {

@@ -11,10 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.jakewharton.rxbinding4.widget.queryTextChangeEvents
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.kotlin.subscribeBy
-import java.util.concurrent.TimeUnit
 
 class SearchFragment: Fragment() {
 
@@ -38,15 +34,20 @@ class SearchFragment: Fragment() {
         viewPager.adapter = SearchResultAdapter(this)
         searchView = view.findViewById(R.id.search_view)
 
-        searchView.queryTextChangeEvents()
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onError = { it.printStackTrace() },
-                onNext = {
-                    charitySharedViewModel.updateSearchEvents(it.queryText.toString())
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    charitySharedViewModel.updateSearchQuery(query)
                 }
-            )
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    charitySharedViewModel.updateSearchQuery(newText)
+                }
+                return true
+            }
+        })
 
         return view
     }

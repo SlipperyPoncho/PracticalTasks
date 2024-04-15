@@ -5,13 +5,25 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class CharitySharedViewModel: ViewModel() {
@@ -20,17 +32,36 @@ class CharitySharedViewModel: ViewModel() {
     val categories: LiveData<List<CategoryModel>>
         get() = _categories
 
-    private val _searchEvents: MutableLiveData<List<EventModel>> = MutableLiveData()
     private val _news: MutableLiveData<List<EventModel>> = MutableLiveData()
-
     val newsEvents: LiveData<List<EventModel>>
         get() = _news
-    val searchEvents: LiveData<List<EventModel>>
-        get() = _searchEvents
 
     private var events: List<EventModel> = emptyList()
 
-    val unreadNewsSubject: BehaviorSubject<Int> = BehaviorSubject.createDefault(0)
+    private val _searchEvents: MutableLiveData<List<EventModel>> = MutableLiveData()
+    private val searchQuery = MutableStateFlow("")
+
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val searchResults: LiveData<List<EventModel>> = searchQuery
+        .debounce(500)
+        .distinctUntilChanged()
+        .flatMapLatest { query ->
+            liveData {
+                updateSearchEvents(query)
+                emit(_searchEvents.value ?: emptyList())
+            }.asFlow()
+        }.asLiveData()
+
+    private val _unreadNewsCounter = MutableStateFlow(0)
+    val unreadNewsCounter = _unreadNewsCounter.asStateFlow()
+
+    private fun decrementCounter(stateFlow: MutableStateFlow<Int>) = viewModelScope.launch {
+        stateFlow.update { count -> count - 1 }
+    }
+
+    private fun setValueToFlow(stateFlow: MutableStateFlow<Int>, value: Int) = viewModelScope.launch {
+        stateFlow.update { value }
+    }
 
     fun initializeData(categoriesFromAssets: String, eventsFromAssets: String) {
         categoriesFromJSON(categoriesFromAssets)
@@ -80,7 +111,8 @@ class CharitySharedViewModel: ViewModel() {
         _searchEvents.postValue(mappedEvents)
         _news.postValue(mappedEvents)
         this.events = mappedEvents
-        unreadNewsSubject.onNext(this.events.size)
+        //unreadNewsSubject.onNext(this.events.size)
+        setValueToFlow(_unreadNewsCounter, this.events.size)
     }
 
     private fun mapEvents(events: List<Event>): List<EventModel> {
@@ -123,15 +155,19 @@ class CharitySharedViewModel: ViewModel() {
 
         var unreadFilteredNews = 0
         for (i in _news.value!!) {
-            if (!i.isRead) unreadFilteredNews += 1
+            if (!i.isRead) {
+                unreadFilteredNews += 1
+            }
         }
-        unreadNewsSubject.onNext(unreadFilteredNews)
+        //unreadNewsSubject.onNext(unreadFilteredNews)
+        setValueToFlow(_unreadNewsCounter, unreadFilteredNews)
     }
 
     fun updateUnreadNewsCounter(eventId: UUID) {
         _news.value = _news.value?.map {
             if (it.id == eventId && !it.isRead) {
-                unreadNewsSubject.onNext(unreadNewsSubject.value?.minus(1) ?: 0)
+                //unreadNewsSubject.onNext(unreadNewsSubject.value?.minus(1) ?: 0)
+                decrementCounter(_unreadNewsCounter)
                 it.copy(isRead = true)
             } else {
                 it
@@ -146,7 +182,11 @@ class CharitySharedViewModel: ViewModel() {
         }
     }
 
-    fun updateSearchEvents(query: String) {
+    private fun updateSearchEvents(query: String) {
         _searchEvents.value = events.filter { it.title.contains(query, true) }
+    }
+
+    fun updateSearchQuery(query: String) {
+        searchQuery.value = query
     }
 }

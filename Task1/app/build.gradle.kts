@@ -75,4 +75,6 @@ dependencies {
     implementation("com.jakewharton.rxbinding4:rxbinding:4.0.0")
     implementation("com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0")
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1-Beta")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1-Beta")
 }

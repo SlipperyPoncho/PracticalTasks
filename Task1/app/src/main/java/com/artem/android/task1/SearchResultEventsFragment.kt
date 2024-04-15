@@ -35,7 +35,7 @@ class SearchResultEventsFragment: Fragment() {
         recyclerView = view.findViewById(R.id.events_search_rv)
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = SearchResultEventsAdapter()
-        charitySharedViewModel.searchEvents.observe(viewLifecycleOwner) {
+        charitySharedViewModel.searchResults.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 topLine.visibility = View.GONE
                 bottomLine.visibility = View.GONE
