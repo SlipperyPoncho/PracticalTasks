@@ -24,6 +24,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.UUID
 
 class CharitySharedViewModel: ViewModel() {
@@ -55,6 +60,22 @@ class CharitySharedViewModel: ViewModel() {
     private val _unreadNewsCounter = MutableStateFlow(0)
     val unreadNewsCounter = _unreadNewsCounter.asStateFlow()
 
+    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        this.level = HttpLoggingInterceptor.Level.BODY
+    }
+    private val client = OkHttpClient.Builder().apply {
+        this.addInterceptor(interceptor)
+    }.build()
+
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_API_URL)
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .build()
+
+    private val service: DataApi = retrofit.create(DataApi::class.java)
+
     private fun decrementCounter(stateFlow: MutableStateFlow<Int>) = viewModelScope.launch {
         stateFlow.update { count -> count - 1 }
     }
@@ -64,8 +85,10 @@ class CharitySharedViewModel: ViewModel() {
     }
 
     fun initializeData(categoriesFromAssets: String, eventsFromAssets: String) {
-        categoriesFromJSON(categoriesFromAssets)
-        eventsFromJSON(eventsFromAssets)
+        //categoriesFromJSON(categoriesFromAssets)
+        categoriesFromServer()
+        //eventsFromJSON(eventsFromAssets)
+        eventsFromServer()
     }
 
     @SuppressLint("CheckResult")
@@ -88,14 +111,29 @@ class CharitySharedViewModel: ViewModel() {
                 Log.i("Test", Thread.currentThread().name)
             }
             .subscribe {
-            _categories.postValue(it.map { category ->
-                CategoryModel(
-                    title = category.title,
-                    image = category.image,
-                    categoryType = category.categoryType
-                )
-            })
-        }
+                _categories.postValue(it.map { category ->
+                    CategoryModel(
+                        title = category.title,
+                        image = category.image,
+                        categoryType = category.categoryType
+                    )
+                })
+            }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun categoriesFromServer() {
+        val result = service.getCategories()
+        result.observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                _categories.postValue(it.map { category ->
+                    CategoryModel(
+                        title = category.title,
+                        image = category.image,
+                        categoryType = category.categoryType
+                    )
+                })
+            }
     }
 
     private fun eventsFromJSON(jsonFromAssets: String) {
@@ -111,8 +149,20 @@ class CharitySharedViewModel: ViewModel() {
         _searchEvents.postValue(mappedEvents)
         _news.postValue(mappedEvents)
         this.events = mappedEvents
-        //unreadNewsSubject.onNext(this.events.size)
         setValueToFlow(_unreadNewsCounter, this.events.size)
+    }
+
+    @SuppressLint("CheckResult")
+    private fun eventsFromServer() {
+        val result = service.getEvents()
+        result.observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                val mappedEvents = mapEvents(it)
+                _searchEvents.postValue(mappedEvents)
+                _news.postValue(mappedEvents)
+                this.events = mappedEvents
+                setValueToFlow(_unreadNewsCounter, this.events.size)
+            }
     }
 
     private fun mapEvents(events: List<Event>): List<EventModel> {
@@ -159,14 +209,12 @@ class CharitySharedViewModel: ViewModel() {
                 unreadFilteredNews += 1
             }
         }
-        //unreadNewsSubject.onNext(unreadFilteredNews)
         setValueToFlow(_unreadNewsCounter, unreadFilteredNews)
     }
 
     fun updateUnreadNewsCounter(eventId: UUID) {
         _news.value = _news.value?.map {
             if (it.id == eventId && !it.isRead) {
-                //unreadNewsSubject.onNext(unreadNewsSubject.value?.minus(1) ?: 0)
                 decrementCounter(_unreadNewsCounter)
                 it.copy(isRead = true)
             } else {
@@ -188,5 +236,9 @@ class CharitySharedViewModel: ViewModel() {
 
     fun updateSearchQuery(query: String) {
         searchQuery.value = query
+    }
+
+    companion object {
+        const val BASE_API_URL = "https://f9c564cb-ca58-49fe-8d76-f83ecf91f86c.mock.pstmn.io"
     }
 }

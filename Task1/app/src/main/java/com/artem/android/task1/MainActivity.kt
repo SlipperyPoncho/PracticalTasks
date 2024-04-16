@@ -68,12 +68,17 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
                     charitySharedViewModel.initializeData(resultCategories, resultEvents)
                     isDataLoaded = true
                 }
-                progressBar.visibility = View.GONE
             }
         }
 
         val intentFilter = IntentFilter(BROADCAST_ACTION)
         registerReceiver(broadcastReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+
+        charitySharedViewModel.categories.observe(this) {
+            if (it.isNotEmpty() && isDataLoaded) {
+                progressBar.visibility = View.GONE
+            }
+        }
     }
 
     override fun onStart() {

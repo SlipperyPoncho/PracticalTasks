@@ -189,7 +189,6 @@
                     android:id="@+id/friend1_pic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/friend1"
                     android:importantForAccessibility="no" />
             </androidx.cardview.widget.CardView>
 
@@ -222,7 +221,6 @@
                     android:id="@+id/friend2_pic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/friend2"
                     android:importantForAccessibility="no" />
             </androidx.cardview.widget.CardView>
 
@@ -255,7 +253,6 @@
                     android:id="@+id/friend3_pic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/friend3"
                     android:importantForAccessibility="no" />
             </androidx.cardview.widget.CardView>
 
