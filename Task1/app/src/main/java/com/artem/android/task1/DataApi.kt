@@ -1,11 +1,11 @@
 package com.artem.android.task1
 
-import io.reactivex.rxjava3.core.Observable
+import retrofit2.Response
 import retrofit2.http.GET
 
 interface DataApi {
     @GET("/categories")
-    fun getCategories(): Observable<List<Category>>
+    suspend fun getCategories(): Response<List<Category>>
     @GET("/events")
-    fun getEvents(): Observable<List<Event>>
+    suspend fun getEvents(): Response<List<Event>>
 }

@@ -15,6 +15,8 @@ import com.google.gson.JsonParser
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,10 +26,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.UUID
 
@@ -71,10 +73,13 @@ class CharitySharedViewModel: ViewModel() {
         .baseUrl(BASE_API_URL)
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io()))
         .build()
 
     private val service: DataApi = retrofit.create(DataApi::class.java)
+    private val errorLiveData = MutableLiveData<String>()
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        errorLiveData.value = e.message
+    }
 
     private fun decrementCounter(stateFlow: MutableStateFlow<Int>) = viewModelScope.launch {
         stateFlow.update { count -> count - 1 }
@@ -123,17 +128,29 @@ class CharitySharedViewModel: ViewModel() {
 
     @SuppressLint("CheckResult")
     private fun categoriesFromServer() {
-        val result = service.getCategories()
-        result.observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                _categories.postValue(it.map { category ->
-                    CategoryModel(
-                        title = category.title,
-                        image = category.image,
-                        categoryType = category.categoryType
-                    )
-                })
+        viewModelScope.launch(coroutineExceptionHandler) {
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = service.getCategories()
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        if (data != null) {
+                            _categories.postValue(data.map { category ->
+                                CategoryModel(
+                                    title = category.title,
+                                    image = category.image,
+                                    categoryType = category.categoryType
+                                )
+                            })
+                        }
+                    } else {
+                        errorLiveData.postValue(response.message())
+                    }
+                } catch (e: Exception) {
+                    errorLiveData.postValue(e.message)
+                }
             }
+        }
     }
 
     private fun eventsFromJSON(jsonFromAssets: String) {
@@ -154,15 +171,27 @@ class CharitySharedViewModel: ViewModel() {
 
     @SuppressLint("CheckResult")
     private fun eventsFromServer() {
-        val result = service.getEvents()
-        result.observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                val mappedEvents = mapEvents(it)
-                _searchEvents.postValue(mappedEvents)
-                _news.postValue(mappedEvents)
-                this.events = mappedEvents
-                setValueToFlow(_unreadNewsCounter, this.events.size)
+        viewModelScope.launch(coroutineExceptionHandler) {
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = service.getEvents()
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        if (data != null) {
+                            val mappedEvents = mapEvents(data)
+                            _searchEvents.postValue(mappedEvents)
+                            _news.postValue(mappedEvents)
+                            this@CharitySharedViewModel.events = mappedEvents
+                            setValueToFlow(_unreadNewsCounter, this@CharitySharedViewModel.events.size)
+                        }
+                    } else {
+                        errorLiveData.postValue(response.message())
+                    }
+                } catch (e: Exception) {
+                    errorLiveData.postValue(e.message)
+                }
             }
+        }
     }
 
     private fun mapEvents(events: List<Event>): List<EventModel> {
