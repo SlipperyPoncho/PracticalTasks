@@ -91,9 +91,9 @@ class CharitySharedViewModel: ViewModel() {
 
     fun initializeData(categoriesFromAssets: String, eventsFromAssets: String) {
         //categoriesFromJSON(categoriesFromAssets)
-        categoriesFromServer()
+        categoriesFromServer(categoriesFromAssets)
         //eventsFromJSON(eventsFromAssets)
-        eventsFromServer()
+        eventsFromServer(eventsFromAssets)
     }
 
     @SuppressLint("CheckResult")
@@ -127,7 +127,7 @@ class CharitySharedViewModel: ViewModel() {
     }
 
     @SuppressLint("CheckResult")
-    private fun categoriesFromServer() {
+    private fun categoriesFromServer(categoriesFromAssets: String) {
         viewModelScope.launch(coroutineExceptionHandler) {
             withContext(Dispatchers.IO) {
                 try {
@@ -145,6 +145,7 @@ class CharitySharedViewModel: ViewModel() {
                         }
                     } else {
                         errorLiveData.postValue(response.message())
+                        categoriesFromJSON(categoriesFromAssets)
                     }
                 } catch (e: Exception) {
                     errorLiveData.postValue(e.message)
@@ -170,7 +171,7 @@ class CharitySharedViewModel: ViewModel() {
     }
 
     @SuppressLint("CheckResult")
-    private fun eventsFromServer() {
+    private fun eventsFromServer(eventsFromAssets: String) {
         viewModelScope.launch(coroutineExceptionHandler) {
             withContext(Dispatchers.IO) {
                 try {
@@ -186,6 +187,7 @@ class CharitySharedViewModel: ViewModel() {
                         }
                     } else {
                         errorLiveData.postValue(response.message())
+                        eventsFromJSON(eventsFromAssets)
                     }
                 } catch (e: Exception) {
                     errorLiveData.postValue(e.message)
