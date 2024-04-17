@@ -90,9 +90,7 @@ class CharitySharedViewModel: ViewModel() {
     }
 
     fun initializeData(categoriesFromAssets: String, eventsFromAssets: String) {
-        //categoriesFromJSON(categoriesFromAssets)
         categoriesFromServer(categoriesFromAssets)
-        //eventsFromJSON(eventsFromAssets)
         eventsFromServer(eventsFromAssets)
     }
 
