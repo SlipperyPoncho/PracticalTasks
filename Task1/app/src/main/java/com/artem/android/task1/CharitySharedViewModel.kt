@@ -9,6 +9,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.artem.android.task1.domain.DatabaseRepository
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
@@ -33,19 +34,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.UUID
 
-class CharitySharedViewModel: ViewModel() {
+class CharitySharedViewModel(private val mapper: Mapper = Mapper()): ViewModel() {
 
-    private val _categories: MutableLiveData<List<CategoryModel>> = MutableLiveData()
+    private val charityRepository = DatabaseRepository.get()
+
+    private val _categories: MutableLiveData<List<CategoryModel>> = charityRepository.getCategories()
+
     val categories: LiveData<List<CategoryModel>>
         get() = _categories
 
-    private val _news: MutableLiveData<List<EventModel>> = MutableLiveData()
+    private val _news: MutableLiveData<List<EventModel>> = charityRepository.getEvents()
     val newsEvents: LiveData<List<EventModel>>
         get() = _news
 
     private var events: List<EventModel> = emptyList()
 
-    private val _searchEvents: MutableLiveData<List<EventModel>> = MutableLiveData()
+    private val _searchEvents: MutableLiveData<List<EventModel>> = charityRepository.getEvents()
     private val searchQuery = MutableStateFlow("")
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -114,17 +118,14 @@ class CharitySharedViewModel: ViewModel() {
                 Log.i("Test", Thread.currentThread().name)
             }
             .subscribe {
-                _categories.postValue(it.map { category ->
-                    CategoryModel(
-                        title = category.title,
-                        image = category.image,
-                        categoryType = category.categoryType
-                    )
-                })
+                viewModelScope.launch {
+                    charityRepository.insertAllCategories(it)
+                }
             }
     }
 
     @SuppressLint("CheckResult")
+    @Suppress("kotlin:S6310")
     private fun categoriesFromServer(categoriesFromAssets: String) {
         viewModelScope.launch(coroutineExceptionHandler) {
             withContext(Dispatchers.IO) {
@@ -133,13 +134,7 @@ class CharitySharedViewModel: ViewModel() {
                     if (response.isSuccessful) {
                         val data = response.body()
                         if (data != null) {
-                            _categories.postValue(data.map { category ->
-                                CategoryModel(
-                                    title = category.title,
-                                    image = category.image,
-                                    categoryType = category.categoryType
-                                )
-                            })
+                            charityRepository.insertAllCategories(data)
                         }
                     } else {
                         errorLiveData.postValue(response.message())
@@ -161,14 +156,15 @@ class CharitySharedViewModel: ViewModel() {
             events.add(eventData)
         }
 
-        val mappedEvents = mapEvents(events)
-        _searchEvents.postValue(mappedEvents)
-        _news.postValue(mappedEvents)
-        this.events = mappedEvents
+        viewModelScope.launch {
+            charityRepository.insertAllEvents(events)
+        }
+        this.events = mapper.mapEvents(events)
         setValueToFlow(_unreadNewsCounter, this.events.size)
     }
 
     @SuppressLint("CheckResult")
+    @Suppress("kotlin:S6310")
     private fun eventsFromServer(eventsFromAssets: String) {
         viewModelScope.launch(coroutineExceptionHandler) {
             withContext(Dispatchers.IO) {
@@ -177,10 +173,8 @@ class CharitySharedViewModel: ViewModel() {
                     if (response.isSuccessful) {
                         val data = response.body()
                         if (data != null) {
-                            val mappedEvents = mapEvents(data)
-                            _searchEvents.postValue(mappedEvents)
-                            _news.postValue(mappedEvents)
-                            this@CharitySharedViewModel.events = mappedEvents
+                            charityRepository.insertAllEvents(data)
+                            this@CharitySharedViewModel.events = mapper.mapEvents(data)
                             setValueToFlow(_unreadNewsCounter, this@CharitySharedViewModel.events.size)
                         }
                     } else {
@@ -191,25 +185,6 @@ class CharitySharedViewModel: ViewModel() {
                     errorLiveData.postValue(e.message)
                 }
             }
-        }
-    }
-
-    private fun mapEvents(events: List<Event>): List<EventModel> {
-        return events.map {
-            EventModel(
-                id = it.id,
-                title = it.title,
-                images = it.images,
-                eventDetails = it.eventDetails,
-                eventDateStart = it.eventDateStart,
-                eventDateFinish = it.eventDateFinish,
-                sponsor = it.sponsor,
-                address = it.address,
-                phoneNumbers = it.phoneNumbers,
-                detailsText1 = it.detailsText1,
-                detailsText2 = it.detailsText2,
-                categories = it.categories
-            )
         }
     }
 

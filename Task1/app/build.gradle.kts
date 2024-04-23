@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 android {
@@ -31,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -51,34 +52,59 @@ android {
 }
 
 dependencies {
+    val roomVersion = "2.6.1"
+    val okHttpVersion = "4.12.0"
+    val glideVersion = "4.16.0"
+    val coroutinesVersion = "1.8.1-Beta"
+    val rxKotlinVersion = "3.0.1"
+    val rxBindingVersion = "4.0.0"
+    val rxJavaVersion = "3.1.8"
+    val rxAndroidVersion = "3.0.2"
+    val kotlinxDateTimeVersion = "0.5.0"
+    val recyclerViewVersion = "1.3.2"
+    val splashScreenVersion = "1.0.1"
+    val retrofitVersion = "2.9.0"
+    val gsonVersion = "2.10.1"
+    val jUnitVersion = "4.13.2"
+    val coordinatorLayoutVersion = "1.2.0"
+    val constraintLayoutVersion = "2.1.4"
+    val androidMaterialVersion = "1.11.0"
+    val appcompatVersion = "1.6.1"
+    val activityComposeVersion = "1.8.2"
+    val lifecycleRuntimeKtxVersion = "2.7.0"
+    val coreKtxVersion = "1.9.0"
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
-    testImplementation("junit:junit:4.13.2")
+    implementation("androidx.core:core-ktx:$coreKtxVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntimeKtxVersion")
+    implementation("androidx.activity:activity-compose:$activityComposeVersion")
+    implementation("androidx.appcompat:appcompat:$appcompatVersion")
+    implementation("com.google.android.material:material:$androidMaterialVersion")
+    implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion")
+    testImplementation("junit:junit:$jUnitVersion")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
-    implementation ("com.google.code.gson:gson:2.10.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
-    implementation("io.reactivex.rxjava3:rxjava:3.1.8")
-    implementation("com.jakewharton.rxbinding4:rxbinding:4.0.0")
-    implementation("com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0")
-    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1-Beta")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1-Beta")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    //implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
+    implementation ("com.google.code.gson:gson:$gsonVersion")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion")
+    implementation("androidx.core:core-splashscreen:$splashScreenVersion")
+    implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDateTimeVersion")
+    implementation("io.reactivex.rxjava3:rxandroid:$rxAndroidVersion")
+    implementation("io.reactivex.rxjava3:rxjava:$rxJavaVersion")
+    implementation("com.jakewharton.rxbinding4:rxbinding:$rxBindingVersion")
+    implementation("com.jakewharton.rxbinding4:rxbinding-appcompat:$rxBindingVersion")
+    implementation("io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
+    implementation("com.github.bumptech.glide:glide:$glideVersion")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 }

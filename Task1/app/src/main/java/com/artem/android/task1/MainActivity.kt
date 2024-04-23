@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
         registerReceiver(broadcastReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
 
         charitySharedViewModel.categories.observe(this) {
-            if (it.isNotEmpty() && isDataLoaded) {
+            if (it != null && it.isNotEmpty() && isDataLoaded) {
                 progressBar.visibility = View.GONE
             }
         }

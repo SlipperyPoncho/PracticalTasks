@@ -29,7 +29,9 @@ class HelpFragment: Fragment() {
         recyclerView = view.findViewById(R.id.help_category_rv)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         charitySharedViewModel.categories.observe(viewLifecycleOwner) {
-            recyclerView.adapter = CategoryAdapter(it)
+            if (it != null) {
+                recyclerView.adapter = CategoryAdapter(it)
+            }
         }
         return view
     }

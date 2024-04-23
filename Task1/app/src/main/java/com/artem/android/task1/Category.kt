@@ -1,12 +1,13 @@
 package com.artem.android.task1
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "categories")
 data class Category(
-    @SerializedName("title")
-    val title: String = "",
-    @SerializedName("image")
+    @PrimaryKey val title: String = "",
     val image: String? = null,
-    @SerializedName("categoryType")
+    @ColumnInfo(name = "category_type")
     val categoryType: CategoryType? = null
 )
