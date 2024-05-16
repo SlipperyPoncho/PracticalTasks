@@ -73,6 +73,7 @@ dependencies {
     val activityComposeVersion = "1.8.2"
     val lifecycleRuntimeKtxVersion = "2.7.0"
     val coreKtxVersion = "1.9.0"
+    val daggerVersion = "2.51.1"
 
     implementation("androidx.core:core-ktx:$coreKtxVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntimeKtxVersion")
@@ -107,4 +108,6 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("com.google.dagger:dagger:$daggerVersion")
+    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 }
