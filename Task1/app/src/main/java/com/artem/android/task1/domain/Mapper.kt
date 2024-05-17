@@ -1,6 +1,10 @@
-package com.artem.android.task1
+package com.artem.android.task1.domain
 
-class Mapper {
+import com.artem.android.task1.data.Category
+import com.artem.android.task1.data.Event
+import javax.inject.Inject
+
+class Mapper @Inject constructor() {
     fun mapCategories(categories: List<Category>): List<CategoryModel> {
         return categories.map {
             CategoryModel(

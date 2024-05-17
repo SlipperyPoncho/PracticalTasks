@@ -1,19 +1,15 @@
 package com.artem.android.task1
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ProgressBar
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
@@ -24,17 +20,23 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
     private lateinit var bottomNavBarProfile: View
     private lateinit var bottomNavBarNews: View
     private lateinit var progressBar: ProgressBar
-    private lateinit var broadcastReceiver: BroadcastReceiver
     private var isDataLoaded: Boolean = false
 
-    private val charitySharedViewModel by lazy {
-        ViewModelProvider(this)[CharitySharedViewModel::class.java]
+    private val charitySharedViewModel: CharitySharedViewModel by viewModels {
+        (application as App).appComponent.viewModelFactory()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        charitySharedViewModel.initializeData(
+            readJSONFromAssets(this, "categories.json"),
+            readJSONFromAssets(this, "events.json")
+        )
+
+        (application as App).appComponent.inject(this)
 
         bottomNavigationView = findViewById(R.id.bottom_nav_bar)
         bottomNavBarHelp = bottomNavigationView.findViewById(R.id.help)
@@ -57,25 +59,8 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
                 .commit()
         }, 2000)
 
-        val intent = Intent(this, MyService::class.java)
-        startService(intent)
-
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val resultCategories = intent?.getStringExtra(PARAM_RESULT_CATEGORIES)
-                val resultEvents = intent?.getStringExtra(PARAM_RESULT_EVENTS)
-                if (resultCategories != null && resultEvents != null) {
-                    charitySharedViewModel.initializeData(resultCategories, resultEvents)
-                    isDataLoaded = true
-                }
-            }
-        }
-
-        val intentFilter = IntentFilter(BROADCAST_ACTION)
-        registerReceiver(broadcastReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
-
         charitySharedViewModel.categories.observe(this) {
-            if (it != null && it.isNotEmpty() && isDataLoaded) {
+            if (!it.isNullOrEmpty() && isDataLoaded) {
                 progressBar.visibility = View.GONE
             }
         }
@@ -88,7 +73,7 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
                 .replace(R.id.fragment_container, HelpFragment.newInstance())
                 .commit()
             bottomNavigationView.selectedItemId = R.id.help
-            if (!isDataLoaded) progressBar.visibility = View.VISIBLE
+            if (!isDataLoaded) progressBar.visibility = View.GONE
         }
         bottomNavBarProfile.setOnClickListener {
             supportFragmentManager.beginTransaction()
@@ -102,20 +87,15 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
                 .replace(R.id.fragment_container, SearchFragment.newInstance())
                 .commit()
             bottomNavigationView.selectedItemId = R.id.search
-            if (!isDataLoaded) progressBar.visibility = View.VISIBLE
+            if (!isDataLoaded) progressBar.visibility = View.GONE
         }
         bottomNavBarNews.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, NewsFragment.newInstance())
                 .commit()
             bottomNavigationView.selectedItemId = R.id.news
-            if (!isDataLoaded) progressBar.visibility = View.VISIBLE
+            if (!isDataLoaded) progressBar.visibility = View.GONE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(broadcastReceiver)
     }
 
     override fun onLoginClicked() {
@@ -123,13 +103,7 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
             .replace(R.id.fragment_container, HelpFragment.newInstance())
             .commit()
         bottomNavigationView.isVisible = true
-        if (!isDataLoaded) progressBar.visibility = View.VISIBLE
+        if (!isDataLoaded) progressBar.visibility = View.GONE
         bottomNavigationView.selectedItemId = R.id.help
-    }
-
-    companion object {
-        const val PARAM_RESULT_CATEGORIES = "result_categories"
-        const val PARAM_RESULT_EVENTS = "result_events"
-        const val BROADCAST_ACTION = "broadcast"
     }
 }

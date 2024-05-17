@@ -1,12 +1,12 @@
-package com.artem.android.task1.database
+package com.artem.android.task1.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.artem.android.task1.Category
-import com.artem.android.task1.Event
+import com.artem.android.task1.data.Category
+import com.artem.android.task1.data.Event
 
 @Dao
 interface CharityDao {

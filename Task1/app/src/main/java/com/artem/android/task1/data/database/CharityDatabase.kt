@@ -1,10 +1,10 @@
-package com.artem.android.task1.database
+package com.artem.android.task1.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.artem.android.task1.Category
-import com.artem.android.task1.Event
+import com.artem.android.task1.data.Category
+import com.artem.android.task1.data.Event
 
 @Database(version = 1, entities = [Category::class, Event::class])
 @TypeConverters(CharityTypeConverters::class)

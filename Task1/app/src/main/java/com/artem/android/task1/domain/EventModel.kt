@@ -1,5 +1,6 @@
-package com.artem.android.task1
+package com.artem.android.task1.domain
 
+import com.artem.android.task1.CategoryType
 import java.util.UUID
 
 data class EventModel(

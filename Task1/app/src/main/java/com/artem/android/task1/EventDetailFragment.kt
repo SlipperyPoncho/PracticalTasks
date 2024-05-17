@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.artem.android.task1.domain.EventModel
 import java.util.UUID
 
 class EventDetailFragment: Fragment() {

@@ -1,4 +1,6 @@
-package com.artem.android.task1
+package com.artem.android.task1.domain
+
+import com.artem.android.task1.CategoryType
 
 data class CategoryModel(
     val title: String = "",

@@ -1,4 +1,4 @@
-package com.artem.android.task1.database
+package com.artem.android.task1.data.database
 
 import androidx.room.TypeConverter
 import com.artem.android.task1.CategoryType

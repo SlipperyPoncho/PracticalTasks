@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.artem.android.task1.domain.CategoryModel
 
 class FilterFragment: Fragment() {
     private lateinit var filterRecycler: RecyclerView

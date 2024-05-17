@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.artem.android.task1.domain.EventModel
 
 class SearchResultEventsFragment: Fragment() {
 

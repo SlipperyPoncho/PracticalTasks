@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.artem.android.task1.domain.EventModel
 import kotlinx.coroutines.launch
 
 class NewsFragment: Fragment() {
@@ -46,6 +47,7 @@ class NewsFragment: Fragment() {
         adapter = EventAdapter()
 
         charitySharedViewModel.newsEvents.observe(viewLifecycleOwner) { events ->
+            charitySharedViewModel.setEvents(events)
             adapter.differ.submitList(events)
             filterImageView.setOnClickListener {
                 parentFragmentManager.beginTransaction()
