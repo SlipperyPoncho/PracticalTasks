@@ -74,6 +74,7 @@ dependencies {
     val lifecycleRuntimeKtxVersion = "2.7.0"
     val coreKtxVersion = "1.9.0"
     val daggerVersion = "2.51.1"
+    val fragmentVersion = "1.7.1"
 
     implementation("androidx.core:core-ktx:$coreKtxVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntimeKtxVersion")
@@ -110,4 +111,5 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
 }

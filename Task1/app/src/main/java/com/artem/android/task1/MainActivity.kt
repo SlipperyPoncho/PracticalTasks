@@ -10,6 +10,14 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.artem.android.task1.data.readJSONFromAssets
+import com.artem.android.task1.presentation.authfragment.AuthFragment
+import com.artem.android.task1.presentation.helpfragment.HelpFragment
+import com.artem.android.task1.presentation.mainviewmodel.MainActivityViewModel
+import com.artem.android.task1.presentation.newsfragment.NewsFragment
+import com.artem.android.task1.presentation.profilefragment.ProfileFragment
+import com.artem.android.task1.presentation.searchfragment.SearchFragment
+import com.artem.android.task1.presentation.splashfragment.SplashFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
@@ -22,8 +30,8 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
     private lateinit var progressBar: ProgressBar
     private var isDataLoaded: Boolean = false
 
-    private val charitySharedViewModel: CharitySharedViewModel by viewModels {
-        (application as App).appComponent.viewModelFactory()
+    private val mainActivityViewModel: MainActivityViewModel by viewModels {
+        (application as App).appComponent.mainActivityViewModelFactory()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -31,7 +39,7 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        charitySharedViewModel.initializeData(
+        mainActivityViewModel.initializeData(
             readJSONFromAssets(this, "categories.json"),
             readJSONFromAssets(this, "events.json")
         )
@@ -58,12 +66,6 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
                 .replace(R.id.fragment_container, AuthFragment.newInstance())
                 .commit()
         }, 2000)
-
-        charitySharedViewModel.categories.observe(this) {
-            if (!it.isNullOrEmpty() && isDataLoaded) {
-                progressBar.visibility = View.GONE
-            }
-        }
     }
 
     override fun onStart() {

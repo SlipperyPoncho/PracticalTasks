@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.artem.android.task1.data.Category
-import com.artem.android.task1.data.Event
+import com.artem.android.task1.data.entities.Category
+import com.artem.android.task1.data.entities.Event
 
 @Dao
 interface CharityDao {
