@@ -1,23 +1,22 @@
 package com.artem.android.task1
 
-import android.os.Build
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ProgressBar
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.artem.android.task1.data.readJSONFromAssets
-import com.artem.android.task1.presentation.authfragment.AuthFragment
-import com.artem.android.task1.presentation.helpfragment.HelpFragment
+import com.artem.android.authfeature.AuthFragment
+import com.artem.android.core.data.readJSONFromAssets
+import com.artem.android.helpfeature.HelpFragment
+import com.artem.android.newsfeature.NewsFragment
+import com.artem.android.profilefeature.ProfileFragment
+import com.artem.android.searchfeature.SearchFragment
+import com.artem.android.splashfeature.SplashFragment
 import com.artem.android.task1.presentation.mainviewmodel.MainActivityViewModel
-import com.artem.android.task1.presentation.newsfragment.NewsFragment
-import com.artem.android.task1.presentation.profilefragment.ProfileFragment
-import com.artem.android.task1.presentation.searchfragment.SearchFragment
-import com.artem.android.task1.presentation.splashfragment.SplashFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
         (application as App).appComponent.mainActivityViewModelFactory()
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -68,6 +67,7 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
         }, 2000)
     }
 
+    @SuppressLint("CommitTransaction")
     override fun onStart() {
         super.onStart()
         bottomNavBarHelp.setOnClickListener {
@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
         }
     }
 
+    @SuppressLint("CommitTransaction")
     override fun onLoginClicked() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, HelpFragment.newInstance())

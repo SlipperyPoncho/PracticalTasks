@@ -1,6 +1,6 @@
 package com.artem.android.task1.di.modules
 
-import com.artem.android.task1.data.RetrofitApi
+import com.artem.android.core.data.RetrofitApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

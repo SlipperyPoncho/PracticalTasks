@@ -3,10 +3,10 @@ package com.artem.android.task1.presentation.mainviewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.artem.android.task1.domain.usecases.InsertCategoriesUseCase
-import com.artem.android.task1.domain.usecases.InsertEventsUseCase
-import com.artem.android.task1.domain.usecases.RequestCategoriesUseCase
-import com.artem.android.task1.domain.usecases.RequestEventsUseCase
+import com.artem.android.core.domain.usecases.InsertCategoriesUseCase
+import com.artem.android.core.domain.usecases.InsertEventsUseCase
+import com.artem.android.core.domain.usecases.RequestCategoriesUseCase
+import com.artem.android.core.domain.usecases.RequestEventsUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -87,7 +87,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    //implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
     implementation ("com.google.code.gson:gson:$gsonVersion")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
@@ -112,4 +111,12 @@ dependencies {
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
+
+    implementation(project(":core"))
+    implementation(project(":newsfeature"))
+    implementation(project(":helpfeature"))
+    implementation(project(":authfeature"))
+    implementation(project(":profilefeature"))
+    implementation(project(":splashfeature"))
+    implementation(project(":searchfeature"))
 }
