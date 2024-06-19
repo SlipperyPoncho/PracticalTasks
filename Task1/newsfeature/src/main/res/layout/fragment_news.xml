@@ -8,72 +8,8 @@
     android:layout_height="match_parent"
     android:background="@color/light_grey_two">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_news"
+    <androidx.compose.ui.platform.ComposeView
+        android:id = "@+id/compose_view"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/news_toolbar_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/officina_sans_extra_bold"
-            android:gravity="center"
-            android:text="@string/news_toolbar_text"
-            android:textColor="@color/white"
-            android:textSize="21sp"
-            tools:ignore="RtlSymmetry" />
-
-        <ImageView
-            android:id="@+id/news_filter_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/filter"
-            android:contentDescription="@string/app_name" />
-    </androidx.appcompat.widget.Toolbar>
-
-    <ImageView
-        android:id="@+id/unread_news_counter_iv"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:visibility="gone"
-        android:layout_marginStart="20dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/redcircle"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar_news"/>
-
-    <TextView
-        android:id="@+id/unread_news_counter_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:fontFamily="@font/officina_sans_extra_bold"
-        android:text="@string/unread_news_counter_text"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/unread_news_counter_iv"
-        app:layout_constraintEnd_toEndOf="@+id/unread_news_counter_iv"
-        app:layout_constraintStart_toStartOf="@+id/unread_news_counter_iv"
-        app:layout_constraintTop_toTopOf="@+id/unread_news_counter_iv" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_rv"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_news" />
+        android:layout_height="match_parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

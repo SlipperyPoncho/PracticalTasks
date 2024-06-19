@@ -1,5 +1,6 @@
 package com.artem.android.authfeature
 
+import com.artem.android.authfeature.viewmodel.AuthViewModelFactory
 import dagger.Subcomponent
 
 @Subcomponent
@@ -10,4 +11,6 @@ interface AuthComponent {
     interface Factory {
         fun create(): AuthComponent
     }
+
+    fun authViewModelFactory(): AuthViewModelFactory
 }

@@ -7,29 +7,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.artem.android.newsfeature.filterfragment.FilterFragment
 import com.artem.android.newsfeature.viewmodel.NewsFragmentViewModel
-import com.artem.android.core.domain.models.EventModel
-import com.artem.android.newsfeature.adapter.EventAdapter
-import kotlinx.coroutines.launch
+import com.artem.android.newsfeature.eventdetailfragment.EventDetailFragment
 
 class NewsFragment: Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var filterImageView: ImageView
-    private lateinit var adapter: EventAdapter
-    private lateinit var newsCounterIV: ImageView
-    private lateinit var newsCounterTV: TextView
     private lateinit var newsComponent: NewsComponent
+    private lateinit var composeView: ComposeView
 
     private val newsFragmentViewModel: NewsFragmentViewModel by viewModels {
         newsComponent.newsFragmentViewModelFactory()
@@ -61,51 +52,36 @@ class NewsFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_news, container, false)
-        filterImageView = view.findViewById(R.id.news_filter_iv)
-        newsCounterIV = view.findViewById(R.id.unread_news_counter_iv)
-        newsCounterTV = view.findViewById(R.id.unread_news_counter_tv)
-        recyclerView = view.findViewById(R.id.news_rv)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = EventAdapter(requireContext(), childFragmentManager)
+        composeView = view.findViewById(R.id.compose_view)
+        composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        composeView.setContent {
+            NewsScreen(
+                newsViewModel = newsFragmentViewModel,
+                context = requireContext(),
+                onNewsClick = {
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.news_fragment_container, EventDetailFragment.newInstance(it))
+                        .addToBackStack(null)
+                        .commit()
+                },
+                onFilterClick = {
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.news_fragment_container, FilterFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
+                }
+            )
+        }
+        return view
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         newsFragmentViewModel.newsEvents.observe(viewLifecycleOwner) { events ->
             newsFragmentViewModel.setEvents(events)
-            adapter.differ.submitList(events)
-            filterImageView.setOnClickListener {
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.news_fragment_container, FilterFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
-            }
         }
-
-        lifecycleScope.launch {
-            newsFragmentViewModel.unreadNewsCounter.collect {
-                newsCounterTV.text = it.toString()
-                if (newsCounterTV.text == "0") {
-                    newsCounterIV.visibility = View.GONE
-                    newsCounterTV.visibility = View.GONE
-                }
-                else {
-                    newsCounterIV.visibility = View.VISIBLE
-                    newsCounterTV.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        recyclerView.adapter = adapter
-
-        parentFragmentManager.setFragmentResultListener("listRequestKey", viewLifecycleOwner) {
-                _, bundle ->
-            val result = bundle.getParcelableArrayList("listBundleKey", EventModel::class.java)
-            if (result != null) {
-                adapter.differ.submitList(result)
-            }
-        }
-
-        return view
     }
 
     companion object {

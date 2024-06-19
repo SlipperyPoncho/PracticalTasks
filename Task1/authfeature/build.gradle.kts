@@ -15,6 +15,14 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.4"
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -39,6 +47,7 @@ dependencies {
     val rxJavaVersion = "3.1.8"
     val rxAndroidVersion = "3.0.2"
     val daggerVersion = "2.51.1"
+    val fragmentVersion = "1.7.1"
 
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
@@ -54,6 +63,13 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.compose.material:material:1.7.0-beta03")
+    implementation("androidx.compose.compiler:compiler:1.4.4")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.0-beta03")
+    implementation("androidx.activity:activity-compose:1.9.0")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.0-beta03")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
 
     implementation(project(":core"))
 }
