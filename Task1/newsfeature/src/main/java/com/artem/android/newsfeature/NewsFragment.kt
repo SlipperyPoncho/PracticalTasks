@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import androidx.fragment.app.viewModels
 import com.artem.android.newsfeature.filterfragment.FilterFragment
 import com.artem.android.newsfeature.viewmodel.NewsFragmentViewModel
 import com.artem.android.newsfeature.eventdetailfragment.EventDetailFragment
+import java.util.UUID
 
 class NewsFragment: Fragment() {
 
@@ -33,7 +36,6 @@ class NewsFragment: Fragment() {
             .provideNewsComponent()
         newsComponent.inject(this)
 
-        newsFragmentViewModel.getEvents()
         val backCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (childFragmentManager.backStackEntryCount > 0) {
@@ -44,6 +46,26 @@ class NewsFragment: Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, backCallback)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val eventId = arguments?.getSerializable(ARG_EVENT_ID, UUID::class.java)
+        newsFragmentViewModel.getEvents {
+            Handler(Looper.getMainLooper()).postDelayed ({
+                if (eventId != null) {
+                    childFragmentManager.beginTransaction()
+                        .replace(
+                            R.id.news_fragment_container,
+                            EventDetailFragment.newInstance(eventId)
+                        )
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }, 2000)
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -85,8 +107,15 @@ class NewsFragment: Fragment() {
     }
 
     companion object {
+        private const val ARG_EVENT_ID = "eventId"
+
         fun newInstance(): Fragment {
             return NewsFragment()
+        }
+
+        fun newInstanceByNotification(eventId: UUID): Fragment {
+            val args = Bundle().apply { putSerializable(ARG_EVENT_ID, eventId) }
+            return NewsFragment().apply { arguments = args }
         }
     }
 }

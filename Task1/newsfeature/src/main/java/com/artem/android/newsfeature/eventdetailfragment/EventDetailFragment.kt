@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.artem.android.core.domain.models.EventModel
@@ -16,6 +18,7 @@ import com.artem.android.core.data.getDrawableFromName
 import com.artem.android.newsfeature.viewmodel.NewsFragmentViewModel
 import com.artem.android.core.data.setDateText
 import com.artem.android.newsfeature.R
+import com.artem.android.newsfeature.eventdetailfragment.moneydialogfragment.MoneyDialogFragment
 import java.util.UUID
 
 class EventDetailFragment: Fragment() {
@@ -31,6 +34,8 @@ class EventDetailFragment: Fragment() {
     private lateinit var additionalImage2: ImageView
     private lateinit var eventDetailText1: TextView
     private lateinit var eventDetailText2: TextView
+    private lateinit var moneyBtn: ImageButton
+    private var dialogFragment: DialogFragment? = null
 
     private val newsFragmentViewModel: NewsFragmentViewModel by lazy {
         ViewModelProvider(requireParentFragment())[NewsFragmentViewModel::class.java]
@@ -54,6 +59,7 @@ class EventDetailFragment: Fragment() {
         additionalImage2 = view.findViewById(R.id.event_detail_image3_iv)
         eventDetailText1 = view.findViewById(R.id.event_detail_text1_tv)
         eventDetailText2 = view.findViewById(R.id.event_detail_text2_tv)
+        moneyBtn = view.findViewById(R.id.coins_btn)
 
         val eventId = arguments?.getSerializable(ARG_EVENT_ID, UUID::class.java)
         if (eventId != null) {
@@ -63,8 +69,16 @@ class EventDetailFragment: Fragment() {
             }
         }
 
+        moneyBtn.setOnClickListener {
+            if (eventId != null) {
+                dialogFragment = MoneyDialogFragment.newInstance(eventId, eventTitle.text.toString())
+                dialogFragment?.show(this@EventDetailFragment.childFragmentManager, SEND_MONEY)
+            }
+        }
+
         return view
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(event: EventModel) {
@@ -90,7 +104,8 @@ class EventDetailFragment: Fragment() {
     }
 
     companion object {
-        private const val ARG_EVENT_ID = "EventID"
+        private const val ARG_EVENT_ID = "eventId"
+        private const val SEND_MONEY = "SendMoney"
         fun newInstance(eventId: UUID): EventDetailFragment {
             val args = Bundle().apply { putSerializable(ARG_EVENT_ID, eventId) }
             return EventDetailFragment().apply { arguments = args }

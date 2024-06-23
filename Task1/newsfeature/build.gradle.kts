@@ -45,6 +45,7 @@ dependencies {
     val daggerVersion = "2.51.1"
     val coroutinesVersion = "1.8.1-Beta"
     val fragmentVersion = "1.7.1"
+    val workerVersion = "2.8.0"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -67,4 +68,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.7.0-beta03")
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
+    implementation("androidx.work:work-runtime-ktx:$workerVersion")
 }

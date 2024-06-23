@@ -55,9 +55,10 @@ class NewsFragmentViewModel @Inject constructor(
     }
 
     @Suppress("kotlin:S6310")
-    fun getEvents() {
+    fun getEvents(onNavigateToDetails: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             _news = getEventsUseCase()
+            onNavigateToDetails()
         }
     }
 

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="328dp"
+        android:layout_height="280dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/thanks_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/thanks_for_money_text"
+        android:textColor="@color/black_87"
+        android:textSize="20sp"
+        android:layout_marginTop="21dp"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toTopOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/money_size_text"
+        android:textColor="@color/black_54"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@id/thanks_tv" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/money_100_btn"
+        android:layout_width="68dp"
+        android:layout_height="36dp"
+        android:text="@string/_100"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="10dp"
+        style="@style/MoneyBtnStyle"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/money_500_btn"
+        android:layout_width="68dp"
+        android:layout_height="36dp"
+        android:text="@string/_500"
+        style="@style/MoneyBtnStyle"
+        app:layout_constraintStart_toEndOf="@+id/money_100_btn"
+        app:layout_constraintTop_toTopOf="@+id/money_100_btn" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/money_1000_btn"
+        android:layout_width="68dp"
+        android:layout_height="36dp"
+        android:text="@string/_1000"
+        style="@style/MoneyBtnStyle"
+        app:layout_constraintStart_toEndOf="@+id/money_500_btn"
+        app:layout_constraintTop_toTopOf="@+id/money_500_btn" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/money_2000_btn"
+        android:layout_width="68dp"
+        android:layout_height="36dp"
+        android:text="@string/_2000"
+        style="@style/MoneyBtnStyle"
+        app:layout_constraintStart_toEndOf="@+id/money_1000_btn"
+        app:layout_constraintTop_toTopOf="@+id/money_1000_btn" />
+
+    <TextView
+        android:id="@+id/enter_sum_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_sum_text"
+        android:textColor="@color/black_54"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/money_500_btn" />
+
+    <EditText
+        android:id="@+id/sum_et"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/sum_hint_text"
+        android:textSize="16sp"
+        android:layout_marginTop="13dp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/enter_sum_tv" />
+
+    <TextView
+        android:id="@+id/cancel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_sum_text"
+        android:textColor="@color/leaf"
+        android:textAllCaps="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toStartOf="@+id/send_money_tv" />
+
+    <TextView
+        android:id="@+id/send_money_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="@string/send_money_text"
+        android:textColor="@color/leaf"
+        android:textAllCaps="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="@+id/view2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

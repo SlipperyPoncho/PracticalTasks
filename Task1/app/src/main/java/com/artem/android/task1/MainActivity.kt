@@ -1,13 +1,18 @@
 package com.artem.android.task1
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ProgressBar
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.artem.android.authfeature.AuthFragment
 import com.artem.android.core.data.readJSONFromAssets
@@ -18,6 +23,7 @@ import com.artem.android.searchfeature.SearchFragment
 import com.artem.android.splashfeature.SplashFragment
 import com.artem.android.task1.presentation.mainviewmodel.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.UUID
 
 class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
 
@@ -33,10 +39,26 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
         (application as App).appComponent.mainActivityViewModelFactory()
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) { } else { }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        when(ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.POST_NOTIFICATIONS
+        )) {
+            PackageManager.PERMISSION_GRANTED -> {}
+            else -> {
+                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
 
         mainActivityViewModel.initializeData(
             readJSONFromAssets(this, "categories.json"),
@@ -61,9 +83,20 @@ class MainActivity : AppCompatActivity(), AuthFragment.LoginCallback {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, AuthFragment.newInstance())
-                .commit()
+            if (intent.hasExtra("openFragment")) {
+                val eventId = intent.getStringExtra("eventId")
+                supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.fragment_container,
+                        NewsFragment.newInstanceByNotification(UUID.fromString(eventId)))
+                    .commit()
+                bottomNavigationView.isVisible = true
+                bottomNavigationView.selectedItemId = R.id.news
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, AuthFragment.newInstance())
+                    .commit()
+            }
         }, 2000)
     }
 

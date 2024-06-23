@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thanks_for_money_text">Спасибо за решение помочь!</string>
+    <string name="money_size_text">Выберите размер пожертвования</string>
+    <string name="_100">100 ₽</string>
+    <string name="_500">500 ₽</string>
+    <string name="_1000">1000 ₽</string>
+    <string name="_2000">2000 ₽</string>
+    <string name="enter_sum_text">или введите нужную сумму</string>
+    <string name="sum_hint_text">Введите сумму</string>
+    <string name="cancel_sum_text">Отмена</string>
+    <string name="send_money_text">перевести</string>
+</resources>
