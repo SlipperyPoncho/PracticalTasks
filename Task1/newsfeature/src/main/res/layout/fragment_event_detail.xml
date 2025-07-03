@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/light_grey_two"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/event_detail_mask"
+            android:layout_width="match_parent"
+            android:layout_height="656dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_toolbar"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_site_link_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0"/>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/event_detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/event_detail_back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_back"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_toolbar"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_toolbar"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_toolbar" />
+
+        <TextView
+            android:id="@+id/event_detail_toolbar_title"
+            android:layout_width="0dp"
+            android:maxLines="1"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="27dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/officina_sans_extra_bold"
+            android:text="@string/event_text"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="21sp"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_toolbar"
+            app:layout_constraintEnd_toStartOf="@+id/event_detail_share_iv"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_back_iv"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_toolbar" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="32dp"
+            android:background="@drawable/shade"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_toolbar_title"
+            app:layout_constraintEnd_toEndOf="@+id/event_detail_toolbar_title"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_toolbar_title" />
+
+        <ImageView
+            android:id="@+id/event_detail_share_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="23dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/share"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_toolbar"
+            app:layout_constraintEnd_toEndOf="@+id/event_detail_toolbar"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_toolbar" />
+
+        <TextView
+            android:id="@+id/event_detail_title_tv"
+            android:layout_width="250dp"
+            android:layout_height="46dp"
+            android:fontFamily="@font/officina_sans_extra_bold"
+            android:text="пирвет"
+            android:textColor="@color/blue_grey"
+            android:textSize="21sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_toolbar" />
+
+        <ImageView
+            android:id="@+id/event_detail_date_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_calendar_grey"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_title_tv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_title_tv" />
+
+        <TextView
+            android:id="@+id/event_detail_date_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/event_date_text"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_date_iv"
+            app:layout_constraintEnd_toEndOf="@+id/event_detail_title_tv"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_date_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_title_tv" />
+
+        <TextView
+            android:id="@+id/sponsor_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineHeight="20sp"
+            android:text="@string/detail_event_text"
+            android:textColor="@color/black_60"
+            android:textSize="12sp"
+            android:layout_marginTop="11dp"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_title_tv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_date_tv"
+            tools:targetApi="p" />
+
+        <ImageView
+            android:id="@+id/event_detail_nav_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nav"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_date_iv"
+            app:layout_constraintTop_toBottomOf="@+id/sponsor_tv"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/event_detail_phone_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/phone"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_date_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_nav_iv"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/event_detail_mail_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mail"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_date_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_phone_iv"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:id="@+id/event_detail_address_tv"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:text="@string/event_detail_nav_text"
+            android:textColor="@color/black_70"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_nav_iv"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_nav_iv" />
+
+        <TextView
+            android:id="@+id/event_detail_phone_tv"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/event_detail_phone_text"
+            android:textColor="@color/black_70"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_phone_iv"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_phone_iv" />
+
+        <TextView
+            android:id="@+id/event_detail_mail_tv"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/event_detail_mail_text"
+            android:textColor="@color/black_70"
+            android:layout_marginStart="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_mail_iv"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_mail_iv"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_mail_iv" />
+
+        <TextView
+            android:id="@+id/event_detail_mail_link_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/event_detail_mail_link_text"
+            android:textColor="@color/leaf"
+            android:layout_marginStart="6dp"
+            app:layout_constraintBottom_toBottomOf="@+id/event_detail_mail_tv"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_mail_tv"
+            app:layout_constraintTop_toTopOf="@+id/event_detail_mail_tv" />
+
+        <ImageView
+            android:id="@+id/event_detail_image1_iv"
+            android:layout_width="240dp"
+            android:layout_height="160dp"
+            android:src="@drawable/news1"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_mail_tv"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/event_detail_image2_iv"
+            android:layout_width="105dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/cardimage_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_image1_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_mail_tv" />
+
+        <ImageView
+            android:id="@+id/event_detail_image3_iv"
+            android:layout_width="105dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/cardimage_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_image1_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_image2_iv" />
+
+        <TextView
+            android:id="@+id/event_detail_text1_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/event_detail_abzac1_text"
+            android:textColor="@color/black_70"
+            android:textSize="14sp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/event_detail_image3_iv"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_image1_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_image1_iv" />
+
+        <TextView
+            android:id="@+id/event_detail_text2_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/event_detail_abzac2_text"
+            android:textColor="@color/black_70"
+            android:textSize="14sp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/event_detail_image3_iv"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_image1_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_text1_tv" />
+
+        <TextView
+            android:id="@+id/event_detail_site_link_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/event_detail_site_link_text"
+            android:textColor="@color/leaf"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/event_detail_image3_iv"
+            app:layout_constraintStart_toStartOf="@+id/event_detail_image1_iv"
+            app:layout_constraintTop_toBottomOf="@+id/event_detail_text2_tv"
+            app:layout_constraintHorizontal_bias="0"/>
+
+        <ImageView
+            android:id="@+id/event_detail_friend1_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/friend1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_detail_mask"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/event_detail_friend2_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/photo_2"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_friend1_iv"
+            app:layout_constraintTop_toBottomOf="@id/event_detail_mask"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/event_detail_friend3_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/friend2"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_friend2_iv"
+            app:layout_constraintTop_toBottomOf="@id/event_detail_mask"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/event_detail_friend4_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/photo_4"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_friend3_iv"
+            app:layout_constraintTop_toBottomOf="@id/event_detail_mask"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/event_detail_friend5_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/friend3"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_friend4_iv"
+            app:layout_constraintTop_toBottomOf="@id/event_detail_mask"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:id="@+id/event_detail_subs_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/event_detail_subs_text"
+            android:textSize="14sp"
+            android:textColor="@color/black_54"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@+id/event_detail_friend5_iv"
+            app:layout_constraintTop_toTopOf="@id/event_detail_friend5_iv"
+            app:layout_constraintBottom_toBottomOf="@id/event_detail_friend5_iv"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#d8d8d8"
+            app:layout_constraintTop_toTopOf="@+id/bottom_nav_bg"/>
+
+        <View
+            android:id="@+id/bottom_nav_bg"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_detail_friend5_iv"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <ImageView
+            android:id="@+id/shirt_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/shirt"
+            app:layout_constraintBottom_toTopOf="@+id/shirt_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bottom_nav_bg" />
+
+        <TextView
+            android:id="@+id/shirt_tv"
+            android:layout_width="50dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/clothes_text"
+            android:textAlignment="center"
+            android:textColor="@color/black_40"
+            android:textSize="10sp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="SmallSp" />
+
+        <ImageView
+            android:id="@+id/event_detail_separator1"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:src="@drawable/separator_2"
+            android:layout_marginStart="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/bottom_nav_bg"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/hands_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="38dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/hands"
+            app:layout_constraintBottom_toTopOf="@+id/hands_tv"
+            app:layout_constraintStart_toStartOf="@id/event_detail_separator1"
+            app:layout_constraintTop_toTopOf="@+id/bottom_nav_bg" />
+
+        <TextView
+            android:id="@+id/hands_tv"
+            android:layout_width="60dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/volunteer_text"
+            android:textAlignment="center"
+            android:textColor="@color/black_40"
+            android:textSize="10sp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/event_detail_separator1"
+            tools:ignore="SmallSp" />
+
+        <ImageView
+            android:id="@+id/event_detail_separator2"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:src="@drawable/separator_2"
+            android:layout_marginStart="100dp"
+            app:layout_constraintStart_toEndOf="@id/event_detail_separator1"
+            app:layout_constraintTop_toTopOf="@id/bottom_nav_bg"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/tools_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="38dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/tools"
+            app:layout_constraintBottom_toTopOf="@+id/tools_tv"
+            app:layout_constraintStart_toStartOf="@id/event_detail_separator2"
+            app:layout_constraintTop_toTopOf="@+id/bottom_nav_bg" />
+
+        <TextView
+            android:id="@+id/tools_tv"
+            android:layout_width="60dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/instrument_text"
+            android:textAlignment="center"
+            android:textColor="@color/black_40"
+            android:textSize="10sp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/event_detail_separator2"
+            tools:ignore="SmallSp" />
+
+        <ImageView
+            android:id="@+id/event_detail_separator3"
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:src="@drawable/separator_2"
+            android:layout_marginStart="100dp"
+            app:layout_constraintStart_toEndOf="@id/event_detail_separator2"
+            app:layout_constraintTop_toTopOf="@id/bottom_nav_bg"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/coins_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginStart="35dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/coins"
+            app:layout_constraintBottom_toTopOf="@+id/coins_tv"
+            app:layout_constraintStart_toStartOf="@id/event_detail_separator3"
+            app:layout_constraintTop_toTopOf="@+id/bottom_nav_bg" />
+
+        <TextView
+            android:id="@+id/coins_tv"
+            android:layout_width="60dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="17dp"
+            android:text="@string/money_text"
+            android:textAlignment="center"
+            android:textColor="@color/black_40"
+            android:textSize="10sp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/event_detail_separator3"
+            tools:ignore="SmallSp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

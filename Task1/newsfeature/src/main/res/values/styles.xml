@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MoneyBtnStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/leaf</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/money_btn_bg</item>
+    </style>
+    <style name="ActionBtnStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/leaf</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+</resources>

@@ -15,3 +15,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Task1"
 include(":app")
+include(":core")
+include(":newsfeature")
+include(":helpfeature")
+include(":authfeature")
+include(":profilefeature")
+include(":splashfeature")
+include(":searchfeature")

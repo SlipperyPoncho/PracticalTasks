@@ -1,0 +1,27 @@
+[
+  {
+    "categoryType": "CHILD",
+    "image": "category_child",
+    "title": "Дети"
+  },
+  {
+    "categoryType": "ADULT",
+    "image": "category_adult",
+    "title": "Взрослые"
+  },
+  {
+    "categoryType": "OLD",
+    "image": "category_old",
+    "title": "Пожилые"
+  },
+  {
+    "categoryType": "ANIMAL",
+    "image": "category_animals",
+    "title": "Животные"
+  },
+  {
+    "categoryType": "EVENTS",
+    "image": "category_events",
+    "title": "Мероприятия"
+  }
+]

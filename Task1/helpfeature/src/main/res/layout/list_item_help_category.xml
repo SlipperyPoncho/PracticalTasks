@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/help_category_bg"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/help_category_iv"
+        android:layout_width="120dp"
+        android:layout_marginTop="12dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/category_child"
+        app:layout_constraintEnd_toEndOf="@+id/help_category_bg"
+        app:layout_constraintStart_toStartOf="@+id/help_category_bg"
+        app:layout_constraintTop_toTopOf="@+id/help_category_bg" />
+    <TextView
+        android:id="@+id/help_category_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/officina_sans_extra_bold"
+        android:text="@string/help_element_text"
+        android:textColor="#9ebf50"
+        android:textSize="18sp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/help_category_bg"
+        app:layout_constraintEnd_toEndOf="@+id/help_category_bg"
+        app:layout_constraintStart_toStartOf="@+id/help_category_bg"
+        app:layout_constraintTop_toBottomOf="@+id/help_category_iv" />
+</androidx.constraintlayout.widget.ConstraintLayout>
